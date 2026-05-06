@@ -35,7 +35,6 @@
     padding: 2rem 1rem 4rem;
   }
 
-  /* ── page header ── */
   .page-header {
     max-width: 720px;
     margin: 0 auto 2.5rem;
@@ -60,15 +59,10 @@
     margin-bottom: 0.4rem;
   }
 
-  .header-meta {
-    font-size: 0.85rem;
-    color: var(--caption);
-  }
+  .header-meta { font-size: 0.85rem; color: var(--caption); }
 
-  /* ── main layout ── */
   .container { max-width: 720px; margin: 0 auto; }
 
-  /* ── intro box ── */
   .intro {
     background: var(--navy);
     color: #e8e4dc;
@@ -81,7 +75,6 @@
 
   .intro strong { color: white; font-weight: 600; }
 
-  /* ── section ── */
   .section {
     background: white;
     border: 1px solid var(--rule);
@@ -126,43 +119,6 @@
   p { margin-bottom: 0.85rem; font-size: 0.95rem; }
   p:last-child { margin-bottom: 0; }
 
-  /* ── curated sites table ── */
-  .sites {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-    margin-top: 0.75rem;
-  }
-
-  .sites th {
-    background: var(--code-bg);
-    text-align: left;
-    padding: 0.5rem 0.75rem;
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--caption);
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .sites td {
-    padding: 0.6rem 0.75rem;
-    border-bottom: 1px solid var(--rule);
-    vertical-align: top;
-  }
-
-  .sites tr:last-child td { border-bottom: none; }
-  .sites tr:hover td { background: var(--bg); }
-
-  .sites a {
-    color: var(--phase1);
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .sites a:hover { text-decoration: underline; }
-
   .tag {
     display: inline-block;
     font-size: 0.65rem;
@@ -175,7 +131,6 @@
     font-weight: 400;
   }
 
-  /* ── prompt box ── */
   .prompt-box {
     background: var(--code-bg);
     border-left: 4px solid var(--navy);
@@ -198,15 +153,39 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--caption);
-    margin-bottom: 0.75rem;
     display: block;
+    margin-bottom: 0;
   }
 
-  .prompt-box.phase1 { border-left-color: var(--phase1); }
   .prompt-box.phase2 { border-left-color: var(--phase2); }
   .prompt-box.phase3 { border-left-color: var(--phase3); }
 
-  /* ── callout ── */
+  .prompt-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .copy-btn {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+  }
+
+  .copy-btn:hover { background: var(--navy); color: white; }
+  .copy-btn.copied { background: var(--phase2); color: white; border-color: var(--phase2); }
+
   .callout {
     background: var(--highlight);
     border: 1px solid var(--highlight-border);
@@ -219,11 +198,7 @@
 
   .callout-icon { margin-right: 0.35rem; }
 
-  /* ── checklist ── */
-  .checklist {
-    list-style: none;
-    margin: 0.75rem 0;
-  }
+  .checklist { list-style: none; margin: 0.75rem 0; }
 
   .checklist li {
     font-size: 0.92rem;
@@ -242,7 +217,6 @@
     font-size: 1rem;
   }
 
-  /* ── viz menu ── */
   .viz-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -261,7 +235,6 @@
   .viz-item .viz-name { font-weight: 600; color: var(--navy); }
   .viz-item .viz-when { font-size: 0.75rem; color: var(--caption); margin-top: 1px; }
 
-  /* ── timeline bar ── */
   .timeline {
     display: flex;
     gap: 0;
@@ -282,11 +255,6 @@
     white-space: nowrap;
   }
 
-  .tl-seg.s1 { background: var(--phase1); flex: 2; }
-  .tl-seg.s2 { background: var(--phase2); flex: 2; }
-  .tl-seg.s3 { background: var(--phase3); flex: 2; }
-  .tl-seg.s4 { background: var(--crimson); flex: 1.5; }
-
   .tl-labels {
     display: flex;
     gap: 0;
@@ -296,12 +264,7 @@
   }
 
   .tl-lbl { text-align: center; padding: 0 2px; }
-  .tl-lbl.s1 { flex: 2; }
-  .tl-lbl.s2 { flex: 2; }
-  .tl-lbl.s3 { flex: 2; }
-  .tl-lbl.s4 { flex: 1.5; }
 
-  /* ── presentation rubric ── */
   .rubric {
     width: 100%;
     border-collapse: collapse;
@@ -336,7 +299,6 @@
     white-space: nowrap;
   }
 
-  /* ── footer ── */
   .footer {
     max-width: 720px;
     margin: 2rem auto 0;
@@ -355,38 +317,7 @@
   }
 
   h3:first-child { margin-top: 0; }
-
   strong { font-weight: 600; }
-
-  .prompt-box-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.75rem;
-  }
-
-  .prompt-box .prompt-label {
-    margin-bottom: 0;
-  }
-
-  .copy-btn {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--navy);
-    background: white;
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    padding: 4px 10px;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    flex-shrink: 0;
-  }
-
-  .copy-btn:hover { background: var(--navy); color: white; }
-  .copy-btn.copied { background: var(--phase2); color: white; border-color: var(--phase2); }
 
   @media (max-width: 560px) {
     h1 { font-size: 1.7rem; }
@@ -409,7 +340,7 @@
     <strong>The big idea:</strong> You've spent the year learning how to read and understand data. Now you're going to use AI as a coding partner to build an interactive data visualization that goes beyond what pencil and paper can do — one that lets a viewer <em>explore</em> your data, not just look at it. You'll pick a real dataset, ask a question worth answering, and let the data tell its story.
   </div>
 
-  <!-- ── TIMELINE ── -->
+  <!-- TIMELINE -->
   <div class="section">
     <div class="section-header">
       <span class="phase-badge" style="background:var(--navy)">Schedule</span>
@@ -417,19 +348,19 @@
     </div>
     <div class="section-body">
       <div class="timeline">
-        <div class="tl-seg s1" style="flex:3">Phase 1 + 2<br>Data &amp; First Build</div>
-        <div class="tl-seg s3" style="flex:3">Phase 3<br>Go Beyond</div>
-        <div class="tl-seg s4" style="flex:2">Present</div>
+        <div class="tl-seg" style="background:var(--phase1);flex:3">Phase 1 + 2<br>Data &amp; First Build</div>
+        <div class="tl-seg" style="background:var(--phase3);flex:3">Phase 3<br>Go Beyond</div>
+        <div class="tl-seg" style="background:var(--crimson);flex:2">Present</div>
       </div>
       <div class="tl-labels">
-        <div class="tl-lbl s1" style="flex:3"><strong>Monday 5/11 → submit baseline</strong></div>
-        <div class="tl-lbl s3" style="flex:3"><strong>Thursday 5/14 → submit final</strong></div>
-        <div class="tl-lbl s4" style="flex:2"><strong>Friday 5/15</strong></div>
+        <div class="tl-lbl" style="flex:3"><strong>Monday 5/11 → submit baseline visual</strong></div>
+        <div class="tl-lbl" style="flex:3"><strong>Thursday 5/14 → submit final + transcripts</strong></div>
+        <div class="tl-lbl" style="flex:2"><strong>Friday 5/15</strong></div>
       </div>
     </div>
   </div>
 
-  <!-- ── PHASE 1: DATA ── -->
+  <!-- PHASE 1 -->
   <div class="section">
     <div class="section-header">
       <span class="phase-badge p1">Phase 1</span>
@@ -442,7 +373,7 @@
         <span class="callout-icon">💡</span> <strong>What to look for:</strong> Your data should include at least three variables (more is better!), ideally a mix of categorical and quantitative. Samples should also be large enough to meet the conditions for familiar inference procedures. Each dataset page includes a description, variable list, and a direct CSV download link — use that CSV file in Phase 2.
       </div>
 
-      <p style="font-size:0.88rem;color:var(--caption);margin-top:0.5rem"> Explore the list of data sets before picking something &mdash; find something you're actually curious about!</p>
+      <p style="font-size:0.88rem;color:var(--caption);margin-top:0.5rem">Explore the list of data sets before picking something &mdash; find something you're actually curious about!</p>
 
       <h3>Before Moving On, Answer These Together</h3>
       <p style="font-size:0.88rem;color:var(--caption);margin-bottom:0.6rem">These are the questions a statistician asks before touching any tool. Answer them in writing — you'll need them for your presentation.</p>
@@ -456,7 +387,7 @@
     </div>
   </div>
 
-  <!-- ── PHASE 2: FIRST BUILD ── -->
+  <!-- PHASE 2 -->
   <div class="section">
     <div class="section-header">
       <span class="phase-badge p2">Phase 2</span>
@@ -518,10 +449,11 @@ After I answer, build the baseline chart as a clean, well-labeled, interactive H
 
       <h3>Submitting Your Baseline</h3>
       <p>Save your file as <code><strong>teammate1_teammate2.html</strong></code> using both of your last names (e.g., <code>chen_morgan.html</code>). Download it from the LLM's code panel and submit it to Google Classroom by the end of Monday's class. This is your checkpoint — it doesn't need to be finished, but it needs to run correctly in a browser.</p>
+      <p><strong>Also submit your chat transcript</strong> from today's session. Export or copy it as a PDF or shared link and attach it to the same Classroom submission. The transcript is evidence that you were directing the work — it should show you asking questions, pushing back, and making decisions, not just accepting whatever the LLM produced first.</p>
     </div>
   </div>
 
-  <!-- ── PHASE 3: GO BEYOND ── -->
+  <!-- PHASE 3 -->
   <div class="section">
     <div class="section-header">
       <span class="phase-badge p3">Phase 3</span>
@@ -562,6 +494,7 @@ After I answer, build the baseline chart as a clean, well-labeled, interactive H
 
       <h3>Submitting Your Final File</h3>
       <p>By the start of Thursday's class, submit your updated <code>teammate1_teammate2.html</code> to Google Classroom. This is the version that will be hosted in the class gallery at mathclass.today — make sure it opens correctly in a browser with no internet connection required.</p>
+      <p><strong>Also submit your Thursday chat transcript</strong> alongside the file. Together, your Monday and Thursday transcripts are the paper trail for your decisions. If you're asked on Friday why you chose a particular chart type, interaction, or color scheme, your transcripts should back up your answer — they should show you proposing ideas, evaluating options, and steering the tool, not just running the LLM's first suggestion.</p>
 
       <div class="callout">
         <span class="callout-icon">📌</span> <strong>If something breaks</strong> while iterating, tell the LLM exactly what stopped working and ask it to fix only that part. If the code becomes hard to follow, ask the LLM to rewrite the full file cleanly while keeping all existing features. Save a working copy before making big changes.
@@ -569,7 +502,7 @@ After I answer, build the baseline chart as a clean, well-labeled, interactive H
     </div>
   </div>
 
-  <!-- ── PRESENTATION ── -->
+  <!-- PRESENTATION -->
   <div class="section">
     <div class="section-header">
       <span class="phase-badge present">Present</span>
@@ -623,8 +556,18 @@ After I answer, build the baseline chart as a clean, well-labeled, interactive H
             <td><span class="pts">1</span></td>
           </tr>
           <tr>
+            <td><strong>Polish</strong></td>
+            <td>Fonts are readable, axis labels are clear and correctly sized, titles are accurate, no typographical errors — the visualization looks finished</td>
+            <td><span class="pts">1</span></td>
+          </tr>
+          <tr>
             <td><strong>Presentation</strong></td>
             <td>5-minute limit respected; both partners speak; demo is live and working</td>
+            <td><span class="pts">1</span></td>
+          </tr>
+          <tr>
+            <td><strong>Chat transcripts</strong></td>
+            <td>All transcripts submitted; they show you directing the AI — proposing ideas, making decisions, and pushing back — not just accepting the first output</td>
             <td><span class="pts">1</span></td>
           </tr>
         </tbody>
@@ -657,5 +600,3 @@ function copyPrompt(btn) {
 </script>
 </body>
 </html>
-
-
