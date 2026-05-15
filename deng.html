@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mario Kart Cube Rotation</title>
+<style>
+  body {
+    margin: 0;
+    background: #0f172a;
+    font-family: Inter, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: white;
+  }
+
+  .card {
+    width: 960px;
+    background: #111827;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  }
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+  }
+
+  p {
+    margin: 0 0 24px;
+    color: #94a3b8;
+  }
+
+  canvas {
+    width: 100%;
+    background: #020617;
+    border-radius: 20px;
+    display: block;
+  }
+
+  .controls {
+    margin-top: 28px;
+  }
+
+  .labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: #94a3b8;
+    font-size: 14px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>🎮 Mario Kart Cube Rotation</h1>
+    <p>Scatterplot transforms into a wheel-count bar graph with a cube-turn animation.</p>
+
+    <canvas id="chart" width="900" height="520"></canvas>
+
+    <div class="controls">
+      <div class="labels">
+        <span>3D Horizontal Bar Graph</span>
+        <span>2D Scatterplot</span>
+      </div>
+      <input type="range" id="slider" min="0" max="100" value="0" />
+    </div>
+  </div>
+
+<script>
+const raw = [
+  [1,55.5,"new",1],[1,52.99,"new",2],[1,42.97,"used",0],[2,46.03,"used",1],[5,43.98,"used",1],[3,37.96,"used",0],
+  [2,40.95,"used",1],[3,44.95,"used",1],[1,39,"used",0],[3,46.5,"used",1],[3,47.41,"used",1],[2,45.5,"used",1],
+  [2,45.49,"used",1],[2,45,"used",1],[1,43,"used",0],[2,48,"used",1],[1,41.97,"used",0],[1,45.49,"used",1],
+  [2,47.99,"used",1],[1,48.97,"new",1],[2,48.97,"used",1],[3,52.99,"new",2],[2,44.95,"used",1],[2,46.95,"used",1],
+  [1,44.94,"used",1],[1,44.97,"used",1],[3,50.94,"used",2],[1,43.98,"used",1],[2,43.97,"used",1],[1,43.97,"used",1],
+  [2,46.49,"used",1],[4,48.5,"used",1],[2,46.22,"used",1],[3,49.97,"used",1],[1,42.97,"used",1],[3,48.5,"used",1],
+  [2,47.95,"used",1],[1,41.95,"used",0],[1,47.5,"used",1],[2,47.5,"used",1],[2,50.97,"new",1],[2,47.97,"used",1],
+  [1,47.97,"used",1],[2,44.97,"used",1],[2,47.97,"used",1],[2,46,"used",1],[2,48.97,"used",1],[3,51.97,"new",1],
+  [2,51.95,"used",1],[3,54,"new",1],[5,49.95,"used",1],[2,50.97,"new",1],[1,44.97,"used",0],[2,51,"new",1],
+  [2,49.97,"used",1],[5,52.98,"new",2],[3,48.97,"used",1],[3,53.97,"new",2],[2,51.97,"new",1],[1,49.97,"used",1],
+  [3,49.5,"used",1],[2,49.97,"used",1],[2,52.97,"new",1],[4,54,"new",2],[3,51.95,"new",1],[2,52,"new",1],
+  [4,54.97,"new",1],[2,57.97,"new",2],[2,54,"new",1],[3,57.95,"new",2],[3,55.47,"new",2],[1,52,"new",1],
+  [3,55.96,"new",2],[5,57.95,"new",2],[4,55.97,"new",2],[2,55.97,"new",1],[2,56,"new",1],[4,57.97,"new",2],
+  [3,51.97,"used",1],[3,54.95,"used",1],[3,57.97,"new",2],[2,56,"new",1],[3,56.97,"new",2],[2,55,"new",1],
+  [4,59.97,"new",2],[1,54.97,"new",1],[2,56.97,"new",2],[2,59.97,"new",2],[2,56.97,"new",1],[3,58.97,"new",2],
+  [5,62.95,"new",2],[2,60.96,"new",2],[2,57.95,"new",2],[3,64.97,"new",2],[2,58.97,"new",2],[3,61.97,"new",2],
+  [3,59.97,"new",2],[4,62.95,"new",2],[2,57.97,"new",1],[2,59.97,"new",2],[4,62.97,"new",2],[3,63.95,"new",2],
+  [2,57,"new",1],[5,62,"new",2],[2,61.97,"new",2],[3,65,"new",2],[3,64.97,"new",2],[4,65.97,"new",2],
+  [4,67.97,"new",2],[4,68,"new",2],[2,65.97,"new",2],[3,63.97,"new",2],[3,65.97,"new",2],[3,67.97,"new",2],
+  [5,67.97,"new",2],[3,64.97,"new",2],[2,66.97,"new",2],[3,69.97,"new",2],[3,67.95,"new",2],[4,68.97,"new",2],
+  [2,68.97,"new",2],[4,72.97,"new",2],[3,68.97,"new",2],[3,72.97,"new",2],[5,73,"new",2],[3,72.97,"new",2],
+  [5,77.97,"new",2],[2,74.97,"new",2],[4,76.97,"new",2],[4,79.97,"new",2],[4,77.97,"new",2],[3,77,"new",2],
+  [3,78.97,"new",2],[4,80.97,"new",2],[4,86.97,"new",2],[3,82.97,"new",2],[4,88.97,"new",2],[5,91.95,"new",2],
+  [3,87.97,"new",2],[5,89.97,"new",2],[4,91.97,"new",2],[5,94.97,"new",2],[4,90.97,"new",2],[5,95,"new",2],
+  [5,101.97,"new",2],[4,109.96,"new",2],[6,124.97,"new",2]
+];
+
+const canvas = document.getElementById('chart');
+const ctx = canvas.getContext('2d');
+const slider = document.getElementById('slider');
+
+const W = canvas.width;
+const H = canvas.height;
+const PAD = 70;
+
+const plotW = W - PAD * 2;
+const plotH = H - PAD * 2;
+
+const xMin = 0;
+const xMax = 8;
+const yMin = 30;
+const yMax = 130;
+
+function regression(data){
+  const n = data.length;
+  const meanX = data.reduce((s,d)=>s+d[0],0)/n;
+  const meanY = data.reduce((s,d)=>s+d[1],0)/n;
+
+  let num = 0;
+  let den = 0;
+
+  data.forEach(d=>{
+    num += (d[0]-meanX)*(d[1]-meanY);
+    den += (d[0]-meanX)*(d[0]-meanX);
+  });
+
+  const slope = num/den;
+  const intercept = meanY - slope*meanX;
+
+  return {slope, intercept};
+}
+
+const regNew = regression(raw.filter(d=>d[2]==='new'));
+const regUsed = regression(raw.filter(d=>d[2]==='used'));
+
+function xScale(v){
+  return PAD + ((v - xMin) / (xMax - xMin)) * plotW;
+}
+
+function yScale(v){
+  return PAD + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+
+  // RIGHT = scatterplot, LEFT = rotated edge/bar profile
+  const progress = 1 - slider.value / 100;
+  const angle = progress * Math.PI/2;
+
+  // paper rotation compression
+  const faceScale = Math.cos(angle);
+
+  ctx.fillStyle = '#020617';
+  ctx.fillRect(PAD, PAD, plotW, plotH);
+
+  // grid
+  ctx.strokeStyle = '#1e293b';
+  for(let i=40;i<=120;i+=20){
+    const y = yScale(i);
+    ctx.beginPath();
+    ctx.moveTo(PAD, y);
+    ctx.lineTo(PAD + plotW, y);
+    ctx.stroke();
+  }
+
+  // axes
+  ctx.strokeStyle = '#94a3b8';
+  ctx.beginPath();
+  ctx.moveTo(PAD, PAD);
+  ctx.lineTo(PAD, PAD + plotH);
+  ctx.lineTo(PAD + plotW, PAD + plotH);
+  ctx.stroke();
+
+  // x-axis scale for bar lengths
+  if(progress > 0.6){
+    ctx.strokeStyle = '#475569';
+    ctx.fillStyle = '#cbd5e1';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+
+    const axisY = PAD + plotH + 28;
+    const startX = PAD;
+
+    for(let i=0;i<=6;i++){
+      const tickX = startX + i * 90;
+
+      ctx.beginPath();
+      ctx.moveTo(tickX, axisY - 8);
+      ctx.lineTo(tickX, axisY + 8);
+      ctx.stroke();
+
+      ctx.fillText(i.toString(), tickX, axisY + 24);
+    }
+  }
+
+  // legend
+  ctx.fillStyle = '#4f6ef7';
+  ctx.fillRect(W-220, 28, 18, 18);
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = '14px sans-serif';
+  ctx.fillText('New  •  y = '+regNew.slope.toFixed(2)+'x + '+regNew.intercept.toFixed(2), W-120, 42);
+
+  ctx.fillStyle = '#f59e0b';
+  ctx.fillRect(W-120, 28, 18, 18);
+  ctx.fillStyle = '#e2e8f0';
+  ctx.fillText('Used  •  y = '+regUsed.slope.toFixed(2)+'x + '+regUsed.intercept.toFixed(2), W-10, 42);
+
+  // regression lines appear mainly in scatterplot view
+  ctx.globalAlpha = 1 - progress;
+
+  function drawRegression(reg, color){
+    const y1 = reg.slope * xMin + reg.intercept;
+    const y2 = reg.slope * xMax + reg.intercept;
+
+    const xStart = xScale(xMin);
+    const xEnd = xScale(xMax);
+
+    const yStart = yScale(y1);
+    const yEnd = yScale(y2);
+
+    const centerX = PAD + plotW/2;
+
+    const rx1 = centerX + (xStart-centerX)*faceScale;
+    const rx2 = centerX + (xEnd-centerX)*faceScale;
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.setLineDash([8,6]);
+
+    ctx.beginPath();
+    ctx.moveTo(rx1, yStart);
+    ctx.lineTo(rx2, yEnd);
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+  }
+
+  drawRegression(regNew, '#4f6ef7');
+  drawRegression(regUsed, '#f59e0b');
+
+  ctx.globalAlpha = 1;
+
+  // labels
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = '16px sans-serif';
+  ctx.textAlign = 'center';
+
+  ctx.fillText(
+    progress < 0.5 ? 'Number of Bids' : 'Bar Length = Wheels Included',
+    W/2,
+    H - 20
+  );
+
+  ctx.save();
+  ctx.translate(25, H/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText('Total Final Price', 0, 0);
+  ctx.restore();
+
+  // draw each point/bar
+  raw.forEach(d => {
+    const [bids, price, condition, wheels] = d;
+
+    const color = condition === 'new'
+      ? '#4f6ef7'
+      : '#f59e0b';
+
+    // ORIGINAL scatterplot coordinates stay fixed
+    const originalX = xScale(bids);
+    const y = yScale(price);
+
+    // rotate entire graph like a sheet of paper around vertical center
+    const centerX = PAD + plotW/2;
+    const dx = originalX - centerX;
+
+    // compressed x-position during rotation
+    // as graph turns edge-on, all bars collapse toward left axis
+    const rotatedX = PAD + (centerX + dx * faceScale - PAD) * (1-progress);
+
+    // wheels determine revealed side-profile bar length
+    const barLength = wheels * 110 * progress + (wheels > 0 ? 24 : 8);
+
+    // scatterplot dot fades as rotation happens
+    ctx.globalAlpha = 1 - progress;
+
+    ctx.beginPath();
+    ctx.arc(rotatedX, y, 5.5 * (1-progress*0.4), 0, Math.PI*2);
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    // edge-profile horizontal bar appears
+    ctx.globalAlpha = progress;
+
+    const thickness = 12;
+
+    // front face
+    ctx.fillStyle = color;
+    ctx.fillRect(
+      rotatedX,
+      y - thickness/2,
+      barLength,
+      thickness
+    );
+
+    // top face for cube look
+    ctx.beginPath();
+    ctx.moveTo(rotatedX, y - thickness/2);
+    ctx.lineTo(rotatedX + 10, y - thickness/2 - 10);
+    ctx.lineTo(rotatedX + barLength + 10, y - thickness/2 - 10);
+    ctx.lineTo(rotatedX + barLength, y - thickness/2);
+    ctx.closePath();
+    ctx.fillStyle = condition === 'new' ? '#7c93ff' : '#ffd180';
+    ctx.fill();
+
+    // side face
+    ctx.beginPath();
+    ctx.moveTo(rotatedX + barLength, y - thickness/2);
+    ctx.lineTo(rotatedX + barLength + 10, y - thickness/2 - 10);
+    ctx.lineTo(rotatedX + barLength + 10, y + thickness/2 - 10);
+    ctx.lineTo(rotatedX + barLength, y + thickness/2);
+    ctx.closePath();
+    ctx.fillStyle = condition === 'new' ? '#3247b8' : '#b66f05';
+    ctx.fill();
+
+    ctx.globalAlpha = 1;
+  });
+}
+
+slider.addEventListener('input', draw);
+draw();
+</script>
+</body>
+</html>
