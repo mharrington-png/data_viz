@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Babies Crawl Study — Mosaic Plot</title>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f6f9fc, #eef3f8);
+      margin: 0;
+      padding: 40px;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 2.3rem;
+      color: #111827;
+    }
+
+    p.subtitle {
+      color: #4b5563;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .info-card {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .info-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: #374151;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: #111827;
+      font-weight: 600;
+    }
+
+    #chart {
+      height: 650px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      color: #6b7280;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .legend {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      margin-bottom: 20px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+
+    .color-box {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Babies Crawl Study — Mosaic Plot</h1>
+
+    <p class="subtitle">
+      This interactive visualization explores whether babies born during higher temperatures tend to crawl earlier than babies born during lower temperatures.
+      Temperatures are grouped into <strong>Low</strong>, <strong>Medium</strong>, and <strong>High</strong> categories, while crawling ages are grouped into 3‑month ranges.
+    </p>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Data Type</h3>
+        <p>Sample Data</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Observational Unit</h3>
+        <p>Individual Babies</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Main Variables</h3>
+        <p>Temperature & Crawling Age</p>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item">
+        <div class="color-box" style="background:#3b82f6"></div>
+        Early Crawling (0–3 months)
+      </div>
+      <div class="legend-item">
+        <div class="color-box" style="background:#10b981"></div>
+        Average Crawling (4–6 months)
+      </div>
+      <div class="legend-item">
+        <div class="color-box" style="background:#f59e0b"></div>
+        Later Crawling (7–9 months)
+      </div>
+      <div class="legend-item">
+        <div class="color-box" style="background:#ef4444"></div>
+        Very Late Crawling (10–12 months)
+      </div>
+    </div>
+
+    <div id="chart"></div>
+
+    <div class="footer">
+      Hover over each section to explore the number and proportion of babies in each category.
+      The width of each temperature group represents its proportion in the sample, while the height of each colored segment represents the proportion of crawling ages within that group.
+        <div style="margin-top:60px; border-top:2px solid #e5e7eb; padding-top:40px;">
+      <h2 style="font-size:2rem; margin-bottom:10px; color:#111827;">Presentation Feedback Survey</h2>
+
+      <p style="color:#4b5563; line-height:1.6; max-width:800px;">
+        After viewing the visualization, audience members can submit feedback below. The charts update live after each response to help analyze trends in audience engagement and presentation effectiveness.
+      </p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:30px; align-items:start;">
+        <div style="background:#f8fafc; border:1px solid #e5e7eb; border-radius:20px; padding:24px;">
+          <h3 style="margin-top:0; color:#111827;">Submit Your Response</h3>
+
+          <form id="surveyForm" style="display:flex; flex-direction:column; gap:18px;">
+            <div>
+              <label style="display:block; margin-bottom:8px; font-weight:600;">How old are you?</label>
+              <input 
+                type="number" 
+                id="ageInput"
+                min="1"
+                max="120"
+                required
+                style="width:100%; padding:12px; border-radius:12px; border:1px solid #d1d5db; font-size:1rem;"
+              />
+            </div>
+
+            <div>
+              <label style="display:block; margin-bottom:8px; font-weight:600;">Did you enjoy the presentation?</label>
+              <select 
+                id="enjoymentInput"
+                required
+                style="width:100%; padding:12px; border-radius:12px; border:1px solid #d1d5db; font-size:1rem;"
+              >
+                <option value="">Select an option</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <button 
+              type="submit"
+              style="background:#2563eb; color:white; border:none; padding:14px; border-radius:14px; font-size:1rem; font-weight:600; cursor:pointer; transition:0.2s;"
+            >
+              Submit Response
+            </button>
+          </form>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:22px;">
+          <div style="background:#f8fafc; border:1px solid #e5e7eb; border-radius:20px; padding:20px;">
+            <h3 style="margin-top:0; color:#111827;">Live Response Summary</h3>
+            <div id="responseCount" style="font-size:1.1rem; color:#374151;">
+              Total Responses: 0
+            </div>
+
+            <div style="display:flex; gap:12px; margin-top:18px; flex-wrap:wrap;">
+              <button
+                id="removeLastBtn"
+                style="background:#f59e0b; color:white; border:none; padding:10px 14px; border-radius:12px; font-weight:600; cursor:pointer;"
+              >
+                Remove Last Response
+              </button>
+
+              <button
+                id="clearAllBtn"
+                style="background:#ef4444; color:white; border:none; padding:10px 14px; border-radius:12px; font-weight:600; cursor:pointer;"
+              >
+                Clear All Responses
+              </button>
+            </div>
+
+            <div id="recentResponses" style="margin-top:18px; font-size:0.95rem; color:#4b5563;"></div>
+          </div>
+
+          <div style="background:white; border:1px solid #e5e7eb; border-radius:20px; padding:18px;">
+            <div id="feedbackChart" style="height:400px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Example baseline structure for the visualization.
+    // Replace with processed CSV data if needed.
+
+    const tempCategories = ['Low Temperature', 'Medium Temperature', 'High Temperature'];
+
+    // Example grouped frequencies
+    const dataMatrix = {
+      '0–3 months': [8, 14, 21],
+      '4–6 months': [18, 26, 19],
+      '7–9 months': [24, 19, 10],
+      '10–12 months': [10, 8, 4]
+    };
+
+    const colors = {
+      '0–3 months': '#3b82f6',
+      '4–6 months': '#10b981',
+      '7–9 months': '#f59e0b',
+      '10–12 months': '#ef4444'
+    };
+
+    const totals = tempCategories.map((_, i) => {
+      return Object.values(dataMatrix).reduce((sum, arr) => sum + arr[i], 0);
+    });
+
+    const grandTotal = totals.reduce((a, b) => a + b, 0);
+
+    let currentX = 0;
+    const shapes = [];
+    const annotations = [];
+    const hoverTraces = [];
+
+    tempCategories.forEach((temp, i) => {
+      const width = totals[i] / grandTotal;
+      let currentY = 0;
+
+      Object.entries(dataMatrix).forEach(([crawlGroup, values]) => {
+        const value = values[i];
+        const height = value / totals[i];
+        const proportionWithinTemp = ((value / totals[i]) * 100).toFixed(1);
+        const proportionOverall = ((value / grandTotal) * 100).toFixed(1);
+
+        shapes.push({
+          type: 'rect',
+          x0: currentX,
+          x1: currentX + width,
+          y0: currentY,
+          y1: currentY + height,
+          line: {
+            width: 2,
+            color: 'white'
+          },
+          fillcolor: colors[crawlGroup]
+        });
+
+        annotations.push({
+          x: currentX + width / 2,
+          y: currentY + height / 2,
+          text: `${crawlGroup}<br>${value}`,
+          showarrow: false,
+          font: {
+            color: 'white',
+            size: 13
+          }
+        });
+
+        hoverTraces.push({
+          x: [currentX + width / 2],
+          y: [currentY + height / 2],
+          mode: 'markers',
+          marker: {
+            size: 120,
+            opacity: 0,
+            color: colors[crawlGroup]
+          },
+          hovertemplate:
+            `<b>${temp}</b><br>` +
+            `Crawling Age: ${crawlGroup}<br>` +
+            `Babies: ${value}<br>` +
+            `Within Temperature Group: ${proportionWithinTemp}%<br>` +
+            `Overall Sample: ${proportionOverall}%<extra></extra>`,
+          showlegend: false
+        });
+
+        currentY += height;
+      });
+
+      annotations.push({
+        x: currentX + width / 2,
+        y: -0.07,
+        text: temp,
+        showarrow: false,
+        font: {
+          size: 14,
+          color: '#111827'
+        }
+      });
+
+      currentX += width;
+    });
+
+    const layout = {
+      hoverlabel: {
+        bgcolor: '#111827',
+        bordercolor: '#111827',
+        font: {
+          color: 'white',
+          size: 13
+        }
+      },
+      title: {
+        text: 'Temperature Category vs. Crawling Age',
+        font: {
+          size: 24
+        }
+      },
+      xaxis: {
+        visible: false,
+        range: [0, 1]
+      },
+      yaxis: {
+        title: 'Proportion Within Temperature Group',
+        tickformat: '.0%',
+        range: [0, 1],
+        gridcolor: '#e5e7eb'
+      },
+      shapes: shapes,
+      annotations: annotations,
+      plot_bgcolor: '#ffffff',
+      paper_bgcolor: '#ffffff',
+      margin: {
+        t: 80,
+        l: 70,
+        r: 30,
+        b: 80
+      },
+      hovermode: 'closest'
+    };
+
+    Plotly.newPlot('chart', hoverTraces, layout, {
+      responsive: true,
+      displayModeBar: true,
+      displaylogo: false,
+      modeBarButtonsToAdd: ['toggleSpikelines'],
+      toImageButtonOptions: {
+        format: 'png',
+        filename: 'babies_crawl_mosaic_plot',
+        height: 700,
+        width: 1200,
+        scale: 2
+      }
+    });
+
+    const chart = document.getElementById('chart');
+
+    // -----------------------------
+    // LIVE SURVEY + FEEDBACK CHART
+    // -----------------------------
+
+    const surveyResponses = [];
+
+    function getAgeGroup(age) {
+      if (age <= 13) return '13 or younger';
+      if (age <= 15) return '14–15';
+      if (age <= 18) return '16–18';
+      return '19+';
+    }
+
+    function updateFeedbackChart() {
+      const grouped = {
+        '13 or younger': { Yes: 0, No: 0 },
+        '14–15': { Yes: 0, No: 0 },
+        '16–18': { Yes: 0, No: 0 },
+        '19+': { Yes: 0, No: 0 }
+      };
+
+      surveyResponses.forEach(response => {
+        const group = getAgeGroup(response.age);
+        grouped[group][response.enjoyment]++;
+      });
+
+      const ageGroups = Object.keys(grouped);
+
+      const yesCounts = ageGroups.map(group => grouped[group].Yes);
+      const noCounts = ageGroups.map(group => grouped[group].No);
+
+      const feedbackData = [
+        {
+          x: ageGroups,
+          y: yesCounts,
+          name: 'Enjoyed Presentation',
+          type: 'bar',
+          marker: {
+            color: '#10b981'
+          },
+          hovertemplate:
+            '<b>%{x}</b><br>Yes Responses: %{y}<extra></extra>'
+        },
+        {
+          x: ageGroups,
+          y: noCounts,
+          name: 'Did Not Enjoy',
+          type: 'bar',
+          marker: {
+            color: '#ef4444'
+          },
+          hovertemplate:
+            '<b>%{x}</b><br>No Responses: %{y}<extra></extra>'
+        }
+      ];
+
+      const feedbackLayout = {
+        title: {
+          text: 'Audience Enjoyment by Age Group',
+          font: {
+            size: 22
+          }
+        },
+        barmode: 'group',
+        paper_bgcolor: '#ffffff',
+        plot_bgcolor: '#ffffff',
+        xaxis: {
+          title: 'Age Group'
+        },
+        yaxis: {
+          title: 'Number of Responses',
+          gridcolor: '#e5e7eb',
+          zerolinecolor: '#d1d5db'
+        },
+        margin: {
+          t: 60,
+          l: 60,
+          r: 20,
+          b: 60
+        },
+        legend: {
+          orientation: 'h',
+          y: 1.15
+        }
+      };
+
+      Plotly.newPlot('feedbackChart', feedbackData, feedbackLayout, {
+        responsive: true,
+        displaylogo: false
+      });
+
+      document.getElementById('responseCount').innerHTML = `
+        <strong>Total Responses:</strong> ${surveyResponses.length}<br>
+        <strong>Positive Responses:</strong> ${surveyResponses.filter(r => r.enjoyment === 'Yes').length}<br>
+        <strong>Negative Responses:</strong> ${surveyResponses.filter(r => r.enjoyment === 'No').length}
+      `;
+
+      const recentContainer = document.getElementById('recentResponses');
+
+      if (surveyResponses.length === 0) {
+        recentContainer.innerHTML = '<strong>No responses submitted yet.</strong>';
+      } else {
+        const recent = surveyResponses
+          .slice(-5)
+          .reverse()
+          .map((response, index) => {
+            return `
+              <div style="padding:8px 0; border-bottom:1px solid #e5e7eb;">
+                <strong>Response ${surveyResponses.length - index}:</strong>
+                Age ${response.age} — ${response.enjoyment}
+              </div>
+            `;
+          })
+          .join('');
+
+        recentContainer.innerHTML = `
+          <strong>Recent Responses</strong>
+          ${recent}
+        `;
+      };
+    }
+
+    document.getElementById('surveyForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const age = parseInt(document.getElementById('ageInput').value);
+      const enjoyment = document.getElementById('enjoymentInput').value;
+
+      surveyResponses.push({ age, enjoyment });
+
+      updateFeedbackChart();
+
+      this.reset();
+    });
+
+    updateFeedbackChart();
+
+    document.getElementById('removeLastBtn').addEventListener('click', function() {
+      if (surveyResponses.length > 0) {
+        surveyResponses.pop();
+        updateFeedbackChart();
+      }
+    });
+
+    document.getElementById('clearAllBtn').addEventListener('click', function() {
+      const confirmed = confirm('Are you sure you want to delete all survey responses?');
+
+      if (confirmed) {
+        surveyResponses.length = 0;
+        updateFeedbackChart();
+      }
+    });
+
+    chart.on('plotly_hover', function(data) {
+      document.body.style.cursor = 'pointer';
+    });
+
+    chart.on('plotly_unhover', function(data) {
+      document.body.style.cursor = 'default';
+    });
+  </script>
+</body>
+</html>

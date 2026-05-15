@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<!-- saved from url=(0081)file:///Users/catecorbett/Downloads/mosaic_plot_drug_usage_by_climbers%20(5).html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>Drug Concentration by Substance (Mean vs Median)</title>
+  <script src="./Drug Concentration by Substance (Mean vs Median)_files/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    p.subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 14px;
+      padding: 8px 14px;
+      margin: 0 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    button.active {
+      background-color: #4C78A8;
+      color: white;
+      border-color: #4C78A8;
+    }
+
+    .axis-label {
+      font-size: 14px;
+      fill: #333;
+    }
+
+    .bar {
+      fill: #4C78A8;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      border-radius: 6px;
+      pointer-events: none;
+      font-size: 13px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+
+<h1>Drug Concentration by Substance</h1>
+<p class="subtitle">
+Toggle between <strong>mean</strong> and <strong>median</strong> concentration values.
+</p>
+
+<div class="controls">
+  <button id="meanBtn" class="active">Mean</button>
+  <button id="medianBtn" class="">Median</button>
+</div>
+
+<svg width="900" height="500"><g transform="translate(90,20)"><g transform="translate(0,400)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0,6V0H780V6"></path><g class="tick" opacity="1" transform="translate(75.48387096774195,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em" transform="rotate(-30)" style="text-anchor: end;">Acetazolamide</text></g><g class="tick" opacity="1" transform="translate(201.29032258064518,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em" transform="rotate(-30)" style="text-anchor: end;">Zolpidem</text></g><g class="tick" opacity="1" transform="translate(327.09677419354836,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em" transform="rotate(-30)" style="text-anchor: end;">THC</text></g><g class="tick" opacity="1" transform="translate(452.9032258064516,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em" transform="rotate(-30)" style="text-anchor: end;">Caffeine</text></g><g class="tick" opacity="1" transform="translate(578.7096774193549,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em" transform="rotate(-30)" style="text-anchor: end;">Codeine</text></g><g class="tick" opacity="1" transform="translate(704.5161290322582,0)"><line stroke="currentColor" y2="6"></line><text fill="currentColor" y="9" dy="0.71em" transform="rotate(-30)" style="text-anchor: end;">Morphine</text></g></g><g fill="none" font-size="10" font-family="sans-serif" text-anchor="end"><path class="domain" stroke="currentColor" d="M-6,400H0V0H-6"></path><g class="tick" opacity="1" transform="translate(0,400)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">1</text></g><g class="tick" opacity="1" transform="translate(0,374.9792150475678)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,360.34299411178677)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,349.9584300951356)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,341.9035364628127)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,335.3222091593546)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,329.75777621004465)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,324.93764514270345)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,320.6859882235736)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,316.8827515103805)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">10</text></g><g class="tick" opacity="1" transform="translate(0,291.86196655794834)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,277.2257456221673)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,266.84118160551617)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,258.7862879731933)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,252.2049606697352)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,246.64052772042515)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,241.820396653084)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,237.56873973395415)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,233.76550302076106)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">100</text></g><g class="tick" opacity="1" transform="translate(0,208.7447180683289)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,194.10849713254788)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,183.72393311589673)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,175.6690394835738)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,169.08771218011572)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,163.52327923080577)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,158.7031481634645)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,154.45149124433465)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,150.64825453114165)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">1k</text></g><g class="tick" opacity="1" transform="translate(0,125.62746957870945)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,110.99124864292844)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,100.60668462627724)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,92.55179099395434)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,85.97046369049627)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,80.40603074118629)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,75.58589967384503)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,71.33424275471523)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,67.53100604152213)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em">10k</text></g><g class="tick" opacity="1" transform="translate(0,42.51022108909002)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,27.874000153308963)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,17.489436136657808)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,9.434542504334908)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g><g class="tick" opacity="1" transform="translate(0,2.8532152008767575)"><line stroke="currentColor" x2="-6"></line><text fill="currentColor" x="-9" dy="0.32em"></text></g></g><text class="axis-label" transform="rotate(-90)" x="-200" y="-65" text-anchor="middle">Mean Concentration (log scale)</text><rect class="bar" x="25.16129032258067" width="100.64516129032258" y="0" height="400"></rect><rect class="bar" x="150.9677419354839" width="100.64516129032258" y="258.93096697396703" height="141.06903302603297"></rect><rect class="bar" x="276.7741935483871" width="100.64516129032258" y="245.95942520511676" height="154.04057479488324"></rect><rect class="bar" x="402.5806451612903" width="100.64516129032258" y="74.4751239602246" height="325.5248760397754"></rect><rect class="bar" x="528.3870967741935" width="100.64516129032258" y="141.26099447454945" height="258.7390055254506"></rect><rect class="bar" x="654.1935483870968" width="100.64516129032258" y="197.38088071434814" height="202.61911928565186"></rect></g></svg>
+<div class="tooltip" style="opacity: 0; left: 547px; top: 359px;"><strong>Caffeine</strong><br>mean: 8250.0</div>
+
+<script>
+  const rawData = [
+    { substance: "Acetazolamide", concentration: 1885 },
+    { substance: "Acetazolamide", concentration: 6328 },
+    { substance: "Acetazolamide", concentration: 48 },
+    { substance: "Acetazolamide", concentration: 316400 },
+    { substance: "Acetazolamide", concentration: 14 },
+    { substance: "Zolpidem", concentration: 0.7 },
+    { substance: "Zolpidem", concentration: 21.5 },
+    { substance: "Zolpidem", concentration: 127.2 },
+    { substance: "THC", concentration: 14 },
+    { substance: "THC", concentration: 152 },
+    { substance: "THC", concentration: 48 },
+    { substance: "Caffeine", concentration: 8200 },
+    { substance: "Caffeine", concentration: 8300 },
+    { substance: "Codeine", concentration: 1297 },
+    { substance: "Morphine", concentration: 274 }
+  ];
+
+  function summarize(stat) {
+    return Array.from(
+      d3.group(rawData, d => d.substance),
+      ([substance, values]) => ({
+        substance: substance,
+        value: stat === "mean"
+          ? d3.mean(values, d => d.concentration)
+          : d3.median(values, d => d.concentration)
+      })
+    );
+  }
+
+  const svg = d3.select("svg");
+  const margin = { top: 20, right: 30, bottom: 80, left: 90 };
+  const width = +svg.attr("width") - margin.left - margin.right;
+  const height = +svg.attr("height") - margin.top - margin.bottom;
+
+  const g = svg.append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const xScale = d3.scaleBand().range([0, width]).padding(0.2);
+  const yScale = d3.scaleLog().range([height, 0]);
+
+  const xAxis = g.append("g")
+    .attr("transform", `translate(0,${height})`);
+
+  const yAxis = g.append("g");
+
+  const yLabel = g.append("text")
+    .attr("class", "axis-label")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -height / 2)
+    .attr("y", -65)
+    .attr("text-anchor", "middle");
+
+  const tooltip = d3.select(".tooltip");
+
+  function update(stat) {
+    const data = summarize(stat);
+
+    xScale.domain(data.map(d => d.substance));
+    yScale.domain([1, d3.max(data, d => d.value)]);
+
+    xAxis.call(d3.axisBottom(xScale))
+      .selectAll("text")
+      .attr("transform", "rotate(-30)")
+      .style("text-anchor", "end");
+
+    yAxis.call(d3.axisLeft(yScale).ticks(6, "~s"));
+
+    yLabel.text(`${stat.charAt(0).toUpperCase() + stat.slice(1)} Concentration (log scale)`);
+
+    const bars = g.selectAll("rect")
+      .data(data, d => d.substance);
+
+    bars.enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", d => xScale(d.substance))
+      .attr("width", xScale.bandwidth())
+      .attr("y", height)
+      .attr("height", 0)
+      .merge(bars)
+      .transition()
+      .duration(600)
+      .attr("x", d => xScale(d.substance))
+      .attr("width", xScale.bandwidth())
+      .attr("y", d => yScale(d.value))
+      .attr("height", d => height - yScale(d.value));
+
+    bars.exit().remove();
+
+    g.selectAll("rect")
+      .on("mousemove", (event, d) => {
+        tooltip
+          .style("opacity", 1)
+          .html(`<strong>${d.substance}</strong><br>${stat}: ${d.value.toFixed(1)}`)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 28) + "px");
+      })
+      .on("mouseout", () => tooltip.style("opacity", 0));
+  }
+
+  update("mean");
+
+  d3.select("#meanBtn").on("click", () => {
+    update("mean");
+    d3.select("#meanBtn").classed("active", true);
+    d3.select("#medianBtn").classed("active", false);
+  });
+
+  d3.select("#medianBtn").on("click", () => {
+    update("median");
+    d3.select("#meanBtn").classed("active", false);
+    d3.select("#medianBtn").classed("active", true);
+  });
+</script>
+
+
+</body></html>

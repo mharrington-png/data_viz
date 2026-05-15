@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Can Sensory Restriction Reduce Pd T Scores?</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root {
+      --bg: #f6f3ee;
+      --card: rgba(255, 255, 255, 0.92);
+      --ink: #182330;
+      --muted: #5d6977;
+      --grid: #e3dfd7;
+      --soft: #f3efe8;
+      --focus: #223447;
+      --ring: rgba(34, 52, 71, 0.12);
+      --accent: #8c5c00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(78, 121, 167, 0.14), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(242, 142, 43, 0.14), transparent 34%),
+        var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      max-width: 1240px;
+      margin: 38px auto;
+      padding: 0 28px 48px;
+    }
+
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--ring);
+      border-radius: 28px;
+      box-shadow: 0 18px 42px rgba(30, 42, 54, 0.10);
+      backdrop-filter: blur(8px);
+      padding: 38px 44px;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #6e5f4f;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 980px;
+      font-size: clamp(2rem, 3.4vw, 3.45rem);
+      line-height: 1.03;
+      letter-spacing: -0.05em;
+    }
+
+    .lead {
+      max-width: 920px;
+      margin: 20px 0 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.72;
+    }
+
+    .pd-note {
+      max-width: 920px;
+      margin: 18px 0 0;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: var(--soft);
+      color: #4c4137;
+      font-size: 0.98rem;
+      line-height: 1.62;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 365px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--ring);
+      border-radius: 28px;
+      box-shadow: 0 18px 42px rgba(30, 42, 54, 0.10);
+      backdrop-filter: blur(8px);
+    }
+
+    .viz-card {
+      overflow: hidden;
+    }
+
+    .highlight-controls {
+      padding: 26px 32px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .highlight-button {
+      border: 0;
+      border-radius: 999px;
+      background: #f1ece4;
+      color: #273849;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
+    }
+
+    .highlight-button.active {
+      background: var(--focus);
+      color: white;
+    }
+
+    .highlight-button:hover,
+    .highlight-button:focus-visible {
+      opacity: 0.92;
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .highlight-note {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.58;
+    }
+
+    #chart {
+      width: 100%;
+      height: 690px;
+    }
+
+    .side {
+      padding: 34px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 1.04rem;
+      letter-spacing: -0.02em;
+    }
+
+    .panel-intro {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.68;
+    }
+
+    .key-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .key-card {
+      width: 100%;
+      display: block;
+      text-align: left;
+      border: 1px solid rgba(34, 52, 71, 0.12);
+      background: #fffaf4;
+      border-radius: 18px;
+      padding: 18px 18px 17px;
+      cursor: pointer;
+      color: var(--ink);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+      font-family: inherit;
+    }
+
+    .key-card:hover,
+    .key-card:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(30, 42, 54, 0.10);
+      outline: none;
+    }
+
+    .key-card.active {
+      border-color: var(--key-color);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--key-color) 14%, white), #fffaf4 68%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--key-color) 22%, transparent);
+    }
+
+    .key-topline {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 10px;
+    }
+
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--key-color);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--key-color) 20%, transparent);
+      flex: 0 0 14px;
+    }
+
+    .key-title {
+      font-weight: 850;
+      font-size: 0.94rem;
+    }
+
+    .key-description {
+      margin: 0;
+      color: #4f5d68;
+      font-size: 0.9rem;
+      line-height: 1.58;
+    }
+
+    .key-hint {
+      margin-top: 10px;
+      color: #776957;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .reset-button {
+      border: 0;
+      background: var(--focus);
+      color: white;
+      padding: 12px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      cursor: pointer;
+      width: 100%;
+      font-family: inherit;
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .reset-button:hover,
+    .reset-button:focus-visible {
+      opacity: 0.92;
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .summary-row {
+      border-top: 1px solid var(--grid);
+      padding-top: 18px;
+    }
+
+    .summary-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .summary-label {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-bottom: 6px;
+    }
+
+    .summary-value {
+      font-size: 1.28rem;
+      font-weight: 850;
+      letter-spacing: -0.03em;
+    }
+
+    .summary-detail {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.58;
+      margin-top: 6px;
+    }
+
+    .inference {
+      margin-top: 0;
+      padding: 28px 34px 34px;
+      border-top: 1px solid var(--grid);
+    }
+
+    .inference h2 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .inference p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.58;
+      font-size: 0.94rem;
+      max-width: 820px;
+    }
+
+    .ci-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .ci-card {
+      background: #fbf8f2;
+      border: 1px solid rgba(34, 52, 71, 0.10);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .ci-title {
+      font-weight: 850;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .ci-main {
+      font-size: 1.02rem;
+      font-weight: 850;
+      margin-bottom: 3px;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      #chart {
+        height: 610px;
+      }
+
+      .ci-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Prisoner isolation experiment · AP Statistics data exploration</p>
+      <h1>Which sensory-restriction treatment was linked to the largest drop in Pd T scores?</h1>
+      <p class="lead">
+        This visualization compares pre-treatment and post-treatment MMPI scores for 42 volunteer
+        prisoners. The plotted change score is <strong>pre-treatment Pd T score − post-treatment Pd T score</strong>,
+        so positive values show a decrease after treatment.
+      </p>
+      <p class="pd-note">
+        <strong>What is a Pd T score?</strong> Pd refers to the MMPI Psychopathic Deviate scale.
+        In this project, it is used as a measure related to a person’s need for control or rebellion
+        against control. Scores above 70 are considered significantly high.
+      </p>
+    </section>
+
+    <section class="layout">
+      <div class="card viz-card">
+        <div class="highlight-controls">
+          <button id="below70-toggle" class="highlight-button" type="button">
+            Highlight post-treatment scores below 70
+          </button>
+          <div class="highlight-note">
+            This keeps the original graph visible and highlights the subjects whose
+            <strong>post-treatment Pd T score is below 70</strong>.
+          </div>
+        </div>
+
+        <div id="chart"></div>
+
+        <section class="inference">
+          <h2>Inference summary</h2>
+          <p>
+            A paired-difference t procedure can be used to estimate the mean change for each treatment,
+            assuming the sample is appropriate for inference and the paired differences are reasonably
+            close to normal.
+          </p>
+          <div id="ci-grid" class="ci-grid"></div>
+        </section>
+      </div>
+
+      <aside class="card side">
+        <section class="panel">
+          <h2>Treatment key</h2>
+          <p class="panel-intro">Click a treatment to highlight it in the dot plot.</p>
+          <div id="treatment-key" class="key-list"></div>
+          <button id="reset-key" class="reset-button" type="button">Show all treatments</button>
+        </section>
+
+        <section class="panel">
+          <h2>Change-score summaries</h2>
+          <div id="summary"></div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const stackData = [{"subject": "T1-01", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 67, "post": 74, "change": -7, "post_below_70": false, "stack_index": 0, "y": 3.08}, {"subject": "T1-04", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 69, "post": 76, "change": -7, "post_below_70": false, "stack_index": 1, "y": 3.2}, {"subject": "T1-07", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 67, "post": 74, "change": -7, "post_below_70": false, "stack_index": 2, "y": 3.3200000000000003}, {"subject": "T1-06", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 79, "post": 81, "change": -2, "post_below_70": false, "stack_index": 0, "y": 3.08}, {"subject": "T1-03", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 64, "post": 64, "change": 0, "post_below_70": true, "stack_index": 0, "y": 3.08}, {"subject": "T1-10", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 57, "post": 57, "change": 0, "post_below_70": true, "stack_index": 1, "y": 3.2}, {"subject": "T1-13", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 71, "post": 71, "change": 0, "post_below_70": false, "stack_index": 2, "y": 3.3200000000000003}, {"subject": "T1-05", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 67, "post": 64, "change": 3, "post_below_70": true, "stack_index": 0, "y": 3.08}, {"subject": "T1-09", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 69, "post": 60, "change": 9, "post_below_70": true, "stack_index": 0, "y": 3.08}, {"subject": "T1-11", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 76, "post": 62, "change": 14, "post_below_70": true, "stack_index": 0, "y": 3.08}, {"subject": "T1-12", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 90, "post": 76, "change": 14, "post_below_70": false, "stack_index": 1, "y": 3.2}, {"subject": "T1-08", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 67, "post": 50, "change": 17, "post_below_70": true, "stack_index": 0, "y": 3.08}, {"subject": "T1-14", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 93, "post": 76, "change": 17, "post_below_70": false, "stack_index": 1, "y": 3.2}, {"subject": "T1-02", "treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available.", "pre": 86, "post": 50, "change": 36, "post_below_70": true, "stack_index": 0, "y": 3.08}, {"subject": "T2-03", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 67, "post": 83, "change": -16, "post_below_70": false, "stack_index": 0, "y": 2.08}, {"subject": "T2-08", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 67, "post": 75, "change": -8, "post_below_70": false, "stack_index": 0, "y": 2.08}, {"subject": "T2-02", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 79, "post": 81, "change": -2, "post_below_70": false, "stack_index": 0, "y": 2.08}, {"subject": "T2-07", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 71, "post": 71, "change": 0, "post_below_70": false, "stack_index": 0, "y": 2.08}, {"subject": "T2-05", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 79, "post": 76, "change": 3, "post_below_70": false, "stack_index": 0, "y": 2.08}, {"subject": "T2-10", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 67, "post": 64, "change": 3, "post_below_70": true, "stack_index": 1, "y": 2.2}, {"subject": "T2-11", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 67, "post": 64, "change": 3, "post_below_70": true, "stack_index": 2, "y": 2.3200000000000003}, {"subject": "T2-12", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 74, "post": 71, "change": 3, "post_below_70": false, "stack_index": 3, "y": 2.44}, {"subject": "T2-09", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 69, "post": 64, "change": 5, "post_below_70": true, "stack_index": 0, "y": 2.08}, {"subject": "T2-06", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 76, "post": 69, "change": 7, "post_below_70": true, "stack_index": 0, "y": 2.08}, {"subject": "T2-13", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 81, "post": 74, "change": 7, "post_below_70": false, "stack_index": 1, "y": 2.2}, {"subject": "T2-01", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 88, "post": 79, "change": 9, "post_below_70": false, "stack_index": 0, "y": 2.08}, {"subject": "T2-04", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 83, "post": 74, "change": 9, "post_below_70": false, "stack_index": 1, "y": 2.2}, {"subject": "T2-14", "treatment": "Treatment 2", "shortTreatment": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs.", "pre": 81, "post": 64, "change": 17, "post_below_70": true, "stack_index": 0, "y": 2.08}, {"subject": "T3-03", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 81, "post": 102, "change": -21, "post_below_70": false, "stack_index": 0, "y": 1.08}, {"subject": "T3-11", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 86, "post": 107, "change": -21, "post_below_70": false, "stack_index": 1, "y": 1.2000000000000002}, {"subject": "T3-14", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 71, "post": 81, "change": -10, "post_below_70": false, "stack_index": 0, "y": 1.08}, {"subject": "T3-06", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 76, "post": 81, "change": -5, "post_below_70": false, "stack_index": 0, "y": 1.08}, {"subject": "T3-01", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 86, "post": 90, "change": -4, "post_below_70": false, "stack_index": 0, "y": 1.08}, {"subject": "T3-09", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 67, "post": 69, "change": -2, "post_below_70": true, "stack_index": 0, "y": 1.08}, {"subject": "T3-02", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 53, "post": 53, "change": 0, "post_below_70": true, "stack_index": 0, "y": 1.08}, {"subject": "T3-08", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 60, "post": 60, "change": 0, "post_below_70": true, "stack_index": 1, "y": 1.2000000000000002}, {"subject": "T3-13", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 71, "post": 71, "change": 0, "post_below_70": false, "stack_index": 2, "y": 1.32}, {"subject": "T3-04", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 69, "post": 67, "change": 2, "post_below_70": true, "stack_index": 0, "y": 1.08}, {"subject": "T3-10", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 86, "post": 83, "change": 3, "post_below_70": false, "stack_index": 0, "y": 1.08}, {"subject": "T3-12", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 74, "post": 71, "change": 3, "post_below_70": false, "stack_index": 1, "y": 1.2000000000000002}, {"subject": "T3-05", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 81, "post": 76, "change": 5, "post_below_70": false, "stack_index": 0, "y": 1.08}, {"subject": "T3-07", "treatment": "Treatment 3", "shortTreatment": "No tape", "description": "Four hours of sensory restriction but no taped message.", "pre": 74, "post": 69, "change": 5, "post_below_70": true, "stack_index": 1, "y": 1.2000000000000002}];
+    const summary = [{"treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "count": 14, "mean": 6.21, "median": 1.5, "min": -7, "max": 36}, {"treatment": "Treatment 2", "shortTreatment": "Neutral tape", "count": 14, "mean": 2.86, "median": 3.0, "min": -16, "max": 17}, {"treatment": "Treatment 3", "shortTreatment": "No tape", "count": 14, "mean": -3.21, "median": 0.0, "min": -21, "max": 5}];
+    const treatmentKey = [{"name": "Treatment 1", "short": "Therapeutic tape", "description": "Four hours of sensory restriction plus a 15-minute \"therapeutic\" tape advising that professional help is available."}, {"name": "Treatment 2", "short": "Neutral tape", "description": "Four hours of sensory restriction plus a 15-minute \"emotionally neutral\" tape on training hunting dogs."}, {"name": "Treatment 3", "short": "No tape", "description": "Four hours of sensory restriction but no taped message."}];
+    const inferenceRows = [{"treatment": "Treatment 1", "shortTreatment": "Therapeutic tape", "ci_low": -0.89, "ci_high": 13.32}, {"treatment": "Treatment 2", "shortTreatment": "Neutral tape", "ci_low": -1.73, "ci_high": 7.44}, {"treatment": "Treatment 3", "shortTreatment": "No tape", "ci_low": -8.16, "ci_high": 1.73}];
+    const maxStack = 3;
+
+    const colors = {
+      "Treatment 1": "#4E79A7",
+      "Treatment 2": "#F28E2B",
+      "Treatment 3": "#59A14F"
+    };
+
+    const treatments = ["Treatment 1", "Treatment 2", "Treatment 3"];
+    let activeTreatment = null;
+    let highlightBelow70 = false;
+
+    function baseOpacity(treatment) {
+      if (activeTreatment === null) return 0.9;
+      return activeTreatment === treatment ? 0.92 : 0.18;
+    }
+
+    function renderChart() {
+      const traces = [];
+      const overlayTraces = [];
+
+      treatments.forEach(treatment => {
+        const rows = stackData.filter(d => d.treatment === treatment);
+
+        traces.push({
+          type: "scatter",
+          mode: "markers",
+          name: `${treatment} · ${rows[0].shortTreatment}`,
+          x: rows.map(d => d.change),
+          y: rows.map(d => d.y),
+          customdata: rows.map(d => [d.subject, d.pre, d.post, d.change, d.stack_index + 1, d.description, d.post_below_70]),
+          marker: {
+            size: rows.map(d => highlightBelow70 && d.post_below_70 ? 12 : 15),
+            color: colors[treatment],
+            opacity: rows.map(d => {
+              let opacity = baseOpacity(treatment);
+              if (highlightBelow70) opacity = d.post_below_70 ? 0.2 : opacity * 0.4;
+              return opacity;
+            }),
+            line: {
+              color: "rgba(255,255,255,0.95)",
+              width: activeTreatment === treatment ? 2.4 : 1.8
+            }
+          },
+          hovertemplate:
+            "<b>%{customdata[0]}</b><br>" +
+            "<b>" + treatment + "</b><br>" +
+            "%{customdata[5]}<br><br>" +
+            "Pre-treatment Pd T score: %{customdata[1]}<br>" +
+            "Post-treatment Pd T score: %{customdata[2]}<br>" +
+            "<b>Change score: %{customdata[3]}</b><br>" +
+            "Post-treatment below 70: %{customdata[6]}<br>" +
+            "Position in stack: %{customdata[4]}" +
+            "<extra></extra>"
+        });
+
+        if (highlightBelow70) {
+          const belowRows = rows.filter(d => d.post_below_70);
+          overlayTraces.push({
+            type: "scatter",
+            mode: "markers",
+            name: `${treatment} highlighted`,
+            showlegend: false,
+            x: belowRows.map(d => d.change),
+            y: belowRows.map(d => d.y),
+            customdata: belowRows.map(d => [d.subject, d.pre, d.post, d.change, d.stack_index + 1, d.description, d.post_below_70]),
+            marker: {
+              size: 20,
+              color: colors[treatment],
+              opacity: activeTreatment === null || activeTreatment === treatment ? 0.98 : 0.42,
+              line: {
+                color: "#000000",
+                width: 3
+              },
+              symbol: "circle"
+            },
+            hovertemplate:
+              "<b>%{customdata[0]}</b><br>" +
+              "<b>" + treatment + "</b><br>" +
+              "%{customdata[5]}<br><br>" +
+              "Pre-treatment Pd T score: %{customdata[1]}<br>" +
+              "Post-treatment Pd T score: %{customdata[2]}<br>" +
+              "<b>Change score: %{customdata[3]}</b><br>" +
+              "<b>Highlighted because post-treatment score is below 70</b><br>" +
+              "Position in stack: %{customdata[4]}" +
+              "<extra></extra>"
+          });
+        }
+      });
+
+      const layout = {
+        margin: { l: 106, r: 36, t: 64, b: 84 },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        title: {
+          text: "Distribution of paired change scores by treatment",
+          x: 0.02,
+          y: 0.98,
+          xanchor: "left",
+          font: { size: 23, color: "#182330" }
+        },
+        xaxis: {
+          title: {
+            text: "Change in Pd T score: pre − post",
+            standoff: 18,
+            font: { size: 14, color: "#182330" }
+          },
+          zeroline: false,
+          gridcolor: "#e3dfd7",
+          tickfont: { color: "#40505f" },
+          range: [-24, 39]
+        },
+        yaxis: {
+          title: "",
+          tickvals: [1, 2, 3],
+          ticktext: ["Treatment 3", "Treatment 2", "Treatment 1"],
+          range: [0.75, 3.0 + 0.22 + maxStack * 0.12],
+          showgrid: false,
+          tickfont: { size: 14, color: "#182330" }
+        },
+        legend: {
+          orientation: "h",
+          x: 0.02,
+          y: -0.17,
+          font: { size: 13 },
+          bgcolor: "rgba(255,255,255,0)"
+        },
+        shapes: [
+          {
+            type: "line",
+            x0: 0,
+            x1: 0,
+            y0: 0.82,
+            y1: 3.0 + 0.20 + maxStack * 0.12,
+            line: { color: "#223447", width: 2, dash: "dot" }
+          },
+          ...[1, 2, 3].map(y => ({
+            type: "line",
+            x0: -24,
+            x1: 39,
+            y0: y,
+            y1: y,
+            line: { color: "#ebe5dc", width: 1.5 }
+          }))
+        ],
+        annotations: [
+          {
+            x: 0,
+            y: 3.0 + 0.16 + maxStack * 0.12,
+            xref: "x",
+            yref: "y",
+            text: "No change",
+            showarrow: false,
+            xanchor: "left",
+            yanchor: "bottom",
+            font: { size: 12, color: "#223447" },
+            bgcolor: "rgba(246,243,238,0.85)",
+            borderpad: 4
+          },
+          {
+            x: 28,
+            y: 0.85,
+            xref: "x",
+            yref: "y",
+            text: "Larger decrease →",
+            showarrow: false,
+            font: { size: 13, color: "#5f6b76" }
+          },
+          ...(highlightBelow70 ? [{
+            x: 35,
+            y: 3.0 + 0.16 + maxStack * 0.12,
+            xref: "x",
+            yref: "y",
+            text: "Outlined points: post-treatment score below 70",
+            showarrow: false,
+            xanchor: "right",
+            yanchor: "bottom",
+            font: { size: 12, color: "#000000" },
+            bgcolor: "rgba(246,243,238,0.90)",
+            borderpad: 4
+          }] : [])
+        ],
+        hoverlabel: {
+          bgcolor: "#ffffff",
+          bordercolor: "#d8d2c8",
+          font: { color: "#182330", size: 13 }
+        }
+      };
+
+      Plotly.react("chart", traces.concat(overlayTraces), layout, {
+        responsive: true,
+        displaylogo: false,
+        modeBarButtonsToRemove: ["lasso2d", "select2d", "autoScale2d"]
+      });
+
+      document.querySelectorAll(".key-card").forEach(card => {
+        card.classList.toggle("active", card.dataset.treatment === activeTreatment);
+      });
+
+      document.getElementById("below70-toggle").classList.toggle("active", highlightBelow70);
+    }
+
+    // Build static side panels
+    const treatmentKeyContainer = document.getElementById("treatment-key");
+    treatmentKeyContainer.innerHTML = treatmentKey.map(item => `
+      <button
+        class="key-card"
+        type="button"
+        data-treatment="${item.name}"
+        style="--key-color: ${colors[item.name]}"
+        aria-label="Highlight ${item.name}"
+      >
+        <div class="key-topline">
+          <span class="swatch" aria-hidden="true"></span>
+          <span class="key-title">${item.name}: ${item.short}</span>
+        </div>
+        <p class="key-description">${item.description}</p>
+        <div class="key-hint">Click to highlight</div>
+      </button>
+    `).join("");
+
+    const summaryContainer = document.getElementById("summary");
+    summaryContainer.innerHTML = summary.map(row => `
+      <div class="summary-row">
+        <div class="summary-label">${row.treatment} · ${row.shortTreatment}</div>
+        <div class="summary-value">Mean change: ${row.mean.toFixed(2)}</div>
+        <div class="summary-detail">
+          Median change: ${row.median.toFixed(2)} · n = ${row.count}<br>
+          Range of changes: ${row.min} to ${row.max}
+        </div>
+      </div>
+    `).join("");
+
+    const ciGrid = document.getElementById("ci-grid");
+    ciGrid.innerHTML = inferenceRows.map(row => `
+      <div class="ci-card">
+        <div class="ci-title">${row.treatment} · ${row.shortTreatment}</div>
+        <div class="ci-main">95% CI: ${row.ci_low} to ${row.ci_high}</div>
+      </div>
+    `).join("");
+
+    // Event handlers
+    document.getElementById("below70-toggle").addEventListener("click", () => {
+      highlightBelow70 = !highlightBelow70;
+      renderChart();
+    });
+
+    document.querySelectorAll(".key-card").forEach(card => {
+      card.addEventListener("click", () => {
+        activeTreatment = card.dataset.treatment;
+        renderChart();
+      });
+    });
+
+    document.getElementById("reset-key").addEventListener("click", () => {
+      activeTreatment = null;
+      renderChart();
+    });
+
+    renderChart();
+  </script>
+</body>
+</html>
