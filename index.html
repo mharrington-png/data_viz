@@ -1,602 +1,791 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Viz Exploration · AP Statistics</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Source+Code+Pro:wght@400;600&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mathclass.today</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  :root {
-    --crimson: #A01C31;
-    --crimson-dark: #7a1525;
-    --navy: #1a2744;
-    --ink: #1a1a1a;
-    --bg: #faf8f5;
-    --warm-white: #ffffff;
-    --rule: #d8d3cc;
-    --caption: #6b6560;
-    --highlight: #fff8e6;
-    --highlight-border: #e8c84a;
-    --code-bg: #f0ede8;
-    --phase1: #2a5c8a;
-    --phase2: #2a7f62;
-    --phase3: #7a4a9a;
-  }
+    :root {
+      --bg: #f5f3ee;
+      --ink: #141210;
+      --ink-muted: #6b6560;
+      --ink-faint: #b0aba4;
+      --accent: #b5121b;
+      --border: #d9d4cd;
+      --card-bg: #ffffff;
+      --serif: "Playfair Display", Georgia, serif;
+      --mono: "DM Mono", monospace;
+      --sans: "DM Sans", sans-serif;
+      --learner: #b5121b;
+      --teacher: #1a4f7a;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Source Sans 3', sans-serif;
-    font-weight: 300;
-    line-height: 1.65;
-    padding: 2rem 1rem 4rem;
-  }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .page-header {
-    max-width: 720px;
-    margin: 0 auto 2.5rem;
-    border-bottom: 3px solid var(--crimson);
-    padding-bottom: 1.25rem;
-  }
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 54px;
+      padding: 0 3.5rem;
+      background: rgba(245, 243, 238, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
 
-  .course-tag {
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--crimson);
-    font-weight: 600;
-    margin-bottom: 0.4rem;
-  }
+    .nav-logo {
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
 
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    color: var(--navy);
-    line-height: 1.15;
-    margin-bottom: 0.4rem;
-  }
+    .nav-logo span,
+    .footer-logo span {
+      color: var(--accent);
+    }
 
-  .header-meta { font-size: 0.85rem; color: var(--caption); }
+    .nav-links {
+      display: flex;
+      gap: 2.25rem;
+      list-style: none;
+    }
 
-  .container { max-width: 720px; margin: 0 auto; }
+    .nav-links a {
+      color: var(--ink-muted);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
 
-  .intro {
-    background: var(--navy);
-    color: #e8e4dc;
-    border-radius: 6px;
-    padding: 1.75rem 2rem;
-    margin-bottom: 2rem;
-    font-size: 0.95rem;
-    line-height: 1.7;
-  }
+    .nav-links a:hover {
+      color: var(--accent);
+    }
 
-  .intro strong { color: white; font-weight: 600; }
+    .nav-tagline {
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+    }
 
-  .section {
-    background: white;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-  }
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--rule);
-  }
+    .hero {
+      padding: calc(54px + 5rem) 0 3.5rem;
+      animation: fadeUp 0.85s ease both;
+    }
 
-  .phase-badge {
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: white;
-    background: var(--crimson);
-    border-radius: 3px;
-    padding: 3px 8px;
-    flex-shrink: 0;
-  }
+    .byline {
+      width: fit-content;
+      margin-bottom: 1.25rem;
+      color: var(--ink-muted);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 3px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
 
-  .phase-badge.p1 { background: var(--phase1); }
-  .phase-badge.p2 { background: var(--phase2); }
-  .phase-badge.p3 { background: var(--phase3); }
-  .phase-badge.present { background: var(--crimson); }
+    .byline:hover {
+      color: var(--ink);
+    }
 
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    color: var(--navy);
-  }
+    h1 {
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.02;
+    }
 
-  .section-body { padding: 1.5rem; }
+    h1 em {
+      color: var(--accent);
+      font-style: italic;
+    }
 
-  p { margin-bottom: 0.85rem; font-size: 0.95rem; }
-  p:last-child { margin-bottom: 0; }
+    .hero-desc {
+      max-width: 62ch;
+      color: var(--ink-muted);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+    }
 
-  .tag {
-    display: inline-block;
-    font-size: 0.65rem;
-    background: var(--code-bg);
-    color: var(--caption);
-    border-radius: 10px;
-    padding: 2px 7px;
-    margin-right: 3px;
-    white-space: nowrap;
-    font-weight: 400;
-  }
+    .jump-list {
+      border-top: 1px solid var(--border);
+      animation: fadeUp 0.85s 0.1s ease both;
+    }
 
-  .prompt-box {
-    background: var(--code-bg);
-    border-left: 4px solid var(--navy);
-    border-radius: 0 4px 4px 0;
-    padding: 1.25rem 1.5rem;
-    margin: 1rem 0;
-    font-family: 'Source Code Pro', monospace;
-    font-size: 0.82rem;
-    line-height: 1.7;
-    color: var(--ink);
-    position: relative;
-  }
+    .jump-item {
+      border-bottom: 1px solid var(--border);
+    }
 
-  .prompt-text { white-space: pre-wrap; display: block; }
+    .audience-jump {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 1.25rem;
+      padding: 1.6rem 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: opacity 0.15s;
+    }
 
-  .prompt-box .prompt-label {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--caption);
-    display: block;
-    margin-bottom: 0;
-  }
+    .audience-jump:hover {
+      opacity: 0.7;
+    }
 
-  .prompt-box.phase2 { border-left-color: var(--phase2); }
-  .prompt-box.phase3 { border-left-color: var(--phase3); }
+    .audience-jump.active {
+      opacity: 1;
+    }
 
-  .prompt-box-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.75rem;
-  }
+    .jump-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
 
-  .copy-btn {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--navy);
-    background: white;
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    padding: 4px 10px;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    flex-shrink: 0;
-  }
+    .audience-jump.active .jump-dot {
+      transform: scale(1.5);
+    }
 
-  .copy-btn:hover { background: var(--navy); color: white; }
-  .copy-btn.copied { background: var(--phase2); color: white; border-color: var(--phase2); }
+    .jump-label {
+      flex: 1;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
 
-  .callout {
-    background: var(--highlight);
-    border: 1px solid var(--highlight-border);
-    border-radius: 4px;
-    padding: 1rem 1.25rem;
-    margin: 1rem 0;
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
+    .jump-sub {
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+    }
 
-  .callout-icon { margin-right: 0.35rem; }
+    .jump-arrow {
+      color: var(--ink-faint);
+      flex-shrink: 0;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), color 0.2s;
+    }
 
-  .checklist { list-style: none; margin: 0.75rem 0; }
+    .audience-jump.active .jump-arrow {
+      color: var(--ink);
+      transform: rotate(180deg);
+    }
 
-  .checklist li {
-    font-size: 0.92rem;
-    padding: 0.3rem 0 0.3rem 1.75rem;
-    position: relative;
-    border-bottom: 1px dashed var(--rule);
-  }
+    .aud-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.48s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
 
-  .checklist li:last-child { border-bottom: none; }
+    .aud-panel.open {
+      max-height: 4000px;
+    }
 
-  .checklist li::before {
-    content: '☐';
-    position: absolute;
-    left: 0;
-    color: var(--crimson);
-    font-size: 1rem;
-  }
+    .panel-inner {
+      padding-bottom: 2.5rem;
+    }
 
-  .viz-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-    margin: 0.75rem 0;
-  }
+    .course-group {
+      margin-bottom: 2.5rem;
+    }
 
-  .viz-item {
-    background: var(--bg);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 0.6rem 0.85rem;
-    font-size: 0.85rem;
-  }
+    .course-group:last-child {
+      margin-bottom: 0;
+    }
 
-  .viz-item .viz-name { font-weight: 600; color: var(--navy); }
-  .viz-item .viz-when { font-size: 0.75rem; color: var(--caption); margin-top: 1px; }
+    .course-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 0 0.75rem;
+      color: var(--ink-faint);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
 
-  .timeline {
-    display: flex;
-    gap: 0;
-    margin: 1rem 0;
-    border-radius: 6px;
-    overflow: hidden;
-    height: 40px;
-  }
+    .course-heading::before {
+      display: inline-block;
+      width: 1.25rem;
+      height: 1px;
+      background: var(--border);
+      content: "";
+    }
 
-  .tl-seg {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: white;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
-  }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
 
-  .tl-labels {
-    display: flex;
-    gap: 0;
-    font-size: 0.7rem;
-    color: var(--caption);
-    margin-top: 4px;
-  }
+    .tool-card {
+      position: relative;
+      display: flex;
+      min-height: 190px;
+      flex-direction: column;
+      gap: 0.7rem;
+      padding: 1.75rem 1.75rem 1.5rem;
+      overflow: hidden;
+      background: var(--card-bg);
+      color: inherit;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
 
-  .tl-lbl { text-align: center; padding: 0 2px; }
+    .tool-card::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      content: "";
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.28s ease;
+    }
 
-  .rubric {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-    margin-top: 0.75rem;
-  }
+    .tool-card:hover {
+      background: #fdfcfb;
+    }
 
-  .rubric th {
-    background: var(--navy);
-    color: white;
-    padding: 0.6rem 0.75rem;
-    text-align: left;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
+    .tool-card:hover::after {
+      transform: scaleX(1);
+    }
 
-  .rubric td {
-    padding: 0.65rem 0.75rem;
-    border-bottom: 1px solid var(--rule);
-    vertical-align: top;
-  }
+    .lrn-card::after {
+      background: var(--learner);
+    }
 
-  .rubric tr:last-child td { border-bottom: none; }
-  .rubric tr:nth-child(even) td { background: var(--bg); }
+    .tch-card::after {
+      background: var(--teacher);
+    }
 
-  .pts {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    color: var(--crimson);
-    font-weight: 700;
-    white-space: nowrap;
-  }
+    .tool-title {
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
 
-  .footer {
-    max-width: 720px;
-    margin: 2rem auto 0;
-    font-size: 0.75rem;
-    color: var(--caption);
-    text-align: center;
-    border-top: 1px solid var(--rule);
-    padding-top: 1rem;
-  }
+    .tool-desc {
+      flex: 1;
+      color: var(--ink-muted);
+      font-size: 0.82rem;
+      font-weight: 300;
+      line-height: 1.65;
+    }
 
-  h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    color: var(--navy);
-    margin: 1.1rem 0 0.4rem;
-  }
+    .tool-arrow {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.1rem;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.63rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      transition: gap 0.2s;
+    }
 
-  h3:first-child { margin-top: 0; }
-  strong { font-weight: 600; }
+    .tool-card:hover .tool-arrow {
+      gap: 0.65rem;
+    }
 
-  @media (max-width: 560px) {
-    h1 { font-size: 1.7rem; }
-    .viz-grid { grid-template-columns: 1fr; }
-    .prompt-box { font-size: 0.75rem; }
-  }
-</style>
+    .about-card {
+      display: flex;
+      align-items: flex-start;
+      max-width: 780px;
+      gap: 2rem;
+      padding: 2rem 2.25rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+    }
+
+    .about-avatar-col {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      flex-shrink: 0;
+      gap: 0.75rem;
+    }
+
+    .about-avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 68px;
+      height: 68px;
+      color: #534ab7;
+      background: #eeedf8;
+      border: 1px solid #ccc9ee;
+      border-radius: 50%;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .about-badges {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .about-badge {
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .badge-dept {
+      color: #534ab7;
+      background: #eeedf8;
+    }
+
+    .badge-ai {
+      color: #0f6e56;
+      background: #e1f5ee;
+    }
+
+    .about-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .about-name-row {
+      margin-bottom: 1rem;
+    }
+
+    .about-name {
+      margin-bottom: 0.2rem;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .about-meta {
+      color: var(--ink-muted);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+    }
+
+    .about-p {
+      margin-bottom: 0.75rem;
+      color: var(--ink-muted);
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    .about-p:last-child {
+      margin-bottom: 0;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 1.75rem 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-logo {
+      color: var(--ink-muted);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .footer-note {
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.05em;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        padding: 0 1.25rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        padding: 0 1.25rem;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .jump-sub {
+        display: none;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1.5rem 1.25rem;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .about-card {
+        flex-direction: column;
+      }
+
+      .about-avatar-col {
+        flex-direction: row;
+      }
+    }
+  </style>
 </head>
 <body>
+  <nav>
+    <a class="nav-logo" href="#"><span>math</span>class.today</a>
+    <ul class="nav-links">
+      <li><a onclick="togglePanel('learners')">For Learners</a></li>
+      <li><a onclick="togglePanel('teachers')">For Teachers</a></li>
+      <li><a onclick="togglePanel('about')">About</a></li>
+    </ul>
+    <div class="nav-tagline">Tools for today's classrooms.</div>
+  </nav>
 
-<div class="page-header">
-  <p class="course-tag">AP Statistics · Post-Exam Project</p>
-  <h1>Data Visualization<br>Exploration Lab</h1>
-  <p class="header-meta">Pairs project &nbsp;·&nbsp; Due Friday, May 15 &nbsp;·&nbsp; 5-minute presentation</p>
-</div>
+  <main>
+    <section class="hero">
+      <div class="byline" onclick="togglePanel('about')">Mike Harrington</div>
+      <h1>A Classroom <em>Workshop</em></h1>
+      <p class="hero-desc">
+        A growing collection of tools, activities, and experiments shaped by the everyday work of teaching mathematics. Each project began with an idea about how a web-based resource might support my work as a teacher or my students’ work as learners, then took shape through real classroom use. The projects continue to evolve as I use them, learn from them, and reflect on the value they offer in practice.
+      </p>
+    </section>
 
-<div class="container">
+    <div class="jump-list">
+      <section class="jump-item">
+        <button class="audience-jump" id="jump-learners" type="button" onclick="togglePanel('learners')" aria-expanded="false" aria-controls="panel-learners">
+          <span class="jump-dot" style="background: var(--learner);"></span>
+          <span class="jump-label">For Learners</span>
+          <span class="jump-sub">Classroom Activities and Student Resources</span>
+          <span class="jump-arrow">↓</span>
+        </button>
 
-  <div class="intro">
-    <strong>The big idea:</strong> You've spent the year learning how to read and understand data. Now you're going to use AI as a coding partner to build an interactive data visualization that goes beyond what pencil and paper can do — one that lets a viewer <em>explore</em> your data, not just look at it. You'll pick a real dataset, ask a question worth answering, and let the data tell its story.
-  </div>
+        <div class="aud-panel" id="panel-learners">
+          <div class="panel-inner">
+            <div class="course-group">
+              <div class="course-heading">Advanced Algebra</div>
+              <div class="tools-grid">
+                <a href="/OpenStax-Viewer" class="tool-card lrn-card">
+                  <div class="tool-title">OpenStax Viewer</div>
+                  <div class="tool-desc">User-friendly presentation of OpenStax math textbooks, including detailed navigation, embedded Desmos interactive graphs, and a coordinated practice-panel view.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+              </div>
+            </div>
 
-  <!-- TIMELINE -->
-  <div class="section">
-    <div class="section-header">
-      <span class="phase-badge" style="background:var(--navy)">Schedule</span>
-      <span class="section-title">How These Days Break Down</span>
+            <div class="course-group">
+              <div class="course-heading">AP Statistics</div>
+              <div class="tools-grid">
+                <a href="/data_viz" class="tool-card lrn-card">
+                  <div class="tool-title">Data Visualization Exploration</div>
+                  <div class="tool-desc">A final project asking students to engage with generative AI to produce interactive visuals that tell a story from data.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/which-test" class="tool-card lrn-card">
+                  <div class="tool-title">Which Test?</div>
+                  <div class="tool-desc">A quick in-class activity about choosing appropriate inference methods, hypotheses, and significance levels.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/inference-with-inference" class="tool-card lrn-card">
+                  <div class="tool-title">Inference Practice</div>
+                  <div class="tool-desc">AI-powered scenario practice using the State–Plan–Do–Conclude framework. Structured feedback at each step—you can't skip to the end.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/middlesex-choice-boards/boards/ap-stats-inference-board.html" class="tool-card lrn-card">
+                  <div class="tool-title">AP Statistics Inference Review Choice Board</div>
+                  <div class="tool-desc">Students choose their own practice path from a structured set of options, encouraging agency and ownership of their learning.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/ap-reference" class="tool-card lrn-card">
+                  <div class="tool-title">AP Statistics Reference</div>
+                  <div class="tool-desc">Interactive study materials aligned to the course and exam.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="course-group">
+              <div class="course-heading">BC Calculus</div>
+              <div class="tools-grid">
+                <a href="/middlesex-choice-boards" class="tool-card lrn-card">
+                  <div class="tool-title">Choice Boards</div>
+                  <div class="tool-desc">Topic-by-topic choice boards across all curriculum units. Students choose their own practice path within a curated, structured set of options.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/parametric-visualization" class="tool-card lrn-card" onclick="openToolWindow(event, this.href)">
+                  <div class="tool-title">Parametric Equations Explorer</div>
+                  <div class="tool-desc">An interactive exploration of parametric equations with animations.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/polar-area" class="tool-card lrn-card" onclick="openToolWindow(event, this.href)">
+                  <div class="tool-title">Polar Area Explorer</div>
+                  <div class="tool-desc">An interactive exploration of polar curves.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/ap-reference" class="tool-card lrn-card">
+                  <div class="tool-title">AP Calculus Reference</div>
+                  <div class="tool-desc">Interactive study materials aligned to the course and exam, with an AB/BC filter included.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="course-group">
+              <div class="course-heading">Multivariable and Vector Calculus</div>
+              <div class="tools-grid">
+                <a href="/value_mapping" class="tool-card lrn-card">
+                  <div class="tool-title">Interpreting Level Curves</div>
+                  <div class="tool-desc">An exploration of Wi-Fi strength measured at many points in a rectangular grid. Students note patterns and identify extreme points.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="course-group">
+              <div class="course-heading">Problem Solving</div>
+              <div class="tools-grid">
+                <a href="/problem_viz" class="tool-card lrn-card">
+                  <div class="tool-title">Visualization Project</div>
+                  <div class="tool-desc">A student project leveraging AI to make problem concepts come to life.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/cursed-probability" class="tool-card lrn-card">
+                  <div class="tool-title">Conditional Probability Visualization and Simulation</div>
+                  <div class="tool-desc">A deceptively tricky set of conditional probability problems.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/chomp" class="tool-card lrn-card">
+                  <div class="tool-title">Chomp</div>
+                  <div class="tool-desc">A simple digital game setup for exploring strategy and optimal play.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="jump-item">
+        <button class="audience-jump" id="jump-teachers" type="button" onclick="togglePanel('teachers')" aria-expanded="false" aria-controls="panel-teachers">
+          <span class="jump-dot" style="background: var(--teacher);"></span>
+          <span class="jump-label">For Teachers</span>
+          <span class="jump-sub">Resources for Educators In and Out of Class</span>
+          <span class="jump-arrow">↓</span>
+        </button>
+
+        <div class="aud-panel" id="panel-teachers">
+          <div class="panel-inner">
+            <div class="course-group">
+              <div class="course-heading">Tools for the Classroom</div>
+              <div class="tools-grid">
+                <a href="/Curriculum-Map/" class="tool-card tch-card">
+                  <div class="tool-title">Curriculum</div>
+                  <div class="tool-desc">An interactive website for exploring Middlesex Core Math, including detailed learning objectives and supporting skills.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/rotation_timer" class="tool-card tch-card">
+                  <div class="tool-title">Rotation Timer</div>
+                  <div class="tool-desc">A full-screen classroom timer built for station rotations. Customize rounds per set, phase durations, and sound theme to fit your class structure.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+
+                <a href="/framework/reflection-protocol" class="tool-card tch-card">
+                  <div class="tool-title">AI Reflection Protocol</div>
+                  <div class="tool-desc">A structured tool for processing AI-assisted work, with private and shared reflection options. It prompts metacognitive thinking about how AI was used and works for students and adults alike.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="course-group">
+              <div class="course-heading">Classroom Data</div>
+              <div class="tools-grid">
+                <a href="/engagement/" class="tool-card tch-card">
+                  <div class="tool-title">Classroom Observation Tracker</div>
+                  <div class="tool-desc">A tool for tracking course engagement across behavioral, emotional, and cognitive dimensions. Data is stored locally for privacy.</div>
+                  <div class="tool-arrow">Open →</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="jump-item">
+        <button class="audience-jump" id="jump-about" type="button" onclick="togglePanel('about')" aria-expanded="false" aria-controls="panel-about">
+          <span class="jump-dot" style="background: var(--ink-faint);"></span>
+          <span class="jump-label">About</span>
+          <span class="jump-sub">Mike Harrington</span>
+          <span class="jump-arrow">↓</span>
+        </button>
+
+        <div class="aud-panel" id="panel-about">
+          <div class="panel-inner">
+            <div class="about-card">
+              <div class="about-avatar-col">
+                <div class="about-avatar">MH</div>
+                <div class="about-badges">
+                  <span class="about-badge badge-dept">Dept. Head</span>
+                  <span class="about-badge badge-ai">AI Advisory Council</span>
+                </div>
+              </div>
+
+              <div class="about-content">
+                <div class="about-name-row">
+                  <div class="about-name">Mike Harrington</div>
+                  <div class="about-meta">Mathematics · Middlesex School, Concord MA · since 2012</div>
+                </div>
+                <p class="about-p">I teach mathematics at Middlesex School, where I also chair the AI Advisory Council and head the Math and Computer Science departments. My classroom spans the full range of high school math—from introductory courses through AP and post-AP—and my ongoing studies keep me close to both the math itself and the evolving research on how students learn it.</p>
+                <p class="about-p">I use this site as a workshop for ideas that emerge from teaching. Some projects help me manage the work more thoughtfully; others help students explore concepts, practice with purpose, or become more independent learners. Increasingly, that work also involves figuring out where technology and AI genuinely support learning—and where they do not.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-    <div class="section-body">
-      <div class="timeline">
-        <div class="tl-seg" style="background:var(--phase1);flex:3">Phase 1 + 2<br>Data &amp; First Build</div>
-        <div class="tl-seg" style="background:var(--phase3);flex:3">Phase 3<br>Go Beyond</div>
-        <div class="tl-seg" style="background:var(--crimson);flex:2">Present</div>
-      </div>
-      <div class="tl-labels">
-        <div class="tl-lbl" style="flex:3"><strong>Monday 5/11 → submit baseline visual</strong></div>
-        <div class="tl-lbl" style="flex:3"><strong>Thursday 5/14 → submit final + transcripts</strong></div>
-        <div class="tl-lbl" style="flex:2"><strong>Friday 5/15</strong></div>
-      </div>
-    </div>
-  </div>
+  </main>
 
-  <!-- PHASE 1 -->
-  <div class="section">
-    <div class="section-header">
-      <span class="phase-badge p1">Phase 1</span>
-      <span class="section-title">Find Your Dataset</span>
-    </div>
-    <div class="section-body">
-      <p>You'll find your dataset at <strong><a href="https://www.openintro.org/data/" target="_blank" style="color:var(--phase1)">openintro.org/data</a></strong>. Every dataset there is clean, well-documented, and comes with a description of every variable. Browse until something catches your interest.</p>
+  <footer>
+    <div class="footer-logo"><span>math</span>class.today</div>
+    <div class="footer-note">Tools for today's classrooms.</div>
+  </footer>
 
-      <div class="callout">
-        <span class="callout-icon">💡</span> <strong>What to look for:</strong> Your data should include at least three variables (more is better!), ideally a mix of categorical and quantitative. Samples should also be large enough to meet the conditions for familiar inference procedures. Each dataset page includes a description, variable list, and a direct CSV download link — use that CSV file in Phase 2.
-      </div>
+  <script>
+    function togglePanel(id) {
+      const selectedPanel = document.getElementById(`panel-${id}`);
+      const selectedButton = document.getElementById(`jump-${id}`);
+      const shouldOpen = !selectedPanel.classList.contains("open");
 
-      <p style="font-size:0.88rem;color:var(--caption);margin-top:0.5rem">Explore the list of data sets before picking something &mdash; find something you're actually curious about!</p>
+      document.querySelectorAll(".aud-panel").forEach((panel) => {
+        panel.classList.remove("open");
+      });
 
-      <h3>Before Moving On, Answer These Together</h3>
-      <p style="font-size:0.88rem;color:var(--caption);margin-bottom:0.6rem">These are the questions a statistician asks before touching any tool. Answer them in writing — you'll need them for your presentation.</p>
-      <ul class="checklist">
-        <li><strong>Who are the individuals?</strong> Each row in your dataset represents one _____. Be specific — not just "people," but "adult borrowers who applied for a loan through LendingClub."</li>
-        <li><strong>What is the population?</strong> Describe the full group your dataset is meant to represent. Who or what are you ultimately trying to understand?</li>
-        <li><strong>Sample or population?</strong> Is your dataset the entire population, or a sample drawn from it? If it's a sample, was it collected in a way that makes it representative?</li>
-        <li><strong>What are the variables?</strong> List each variable, note whether it's categorical (C) or quantitative (Q), and write one sentence about what it measures. The OpenIntro dataset page lists these — read them carefully.</li>
-        <li><strong>What question do you want to answer?</strong> Write one specific question your visualization will help address. Not "what does the data show?" — something like "Do loan approval rates differ by home ownership status, and does income explain that gap?"</li>
-      </ul>
-    </div>
-  </div>
+      document.querySelectorAll(".audience-jump").forEach((button) => {
+        button.classList.remove("active");
+        button.setAttribute("aria-expanded", "false");
+      });
 
-  <!-- PHASE 2 -->
-  <div class="section">
-    <div class="section-header">
-      <span class="phase-badge p2">Phase 2</span>
-      <span class="section-title">Build Your Baseline Visualization</span>
-    </div>
-    <div class="section-body">
-      <p>Open an <strong>LLM</strong> of your choice (Large Language Model such as ChatGPT, Gemini, or Claude) and start a new conversation. Note: the minimum age requirement for Gemini and ChatGPT is 13+ while Claude is 18+. Copy the prompt below, upload your CSV, and let the LLM ask you the clarifying questions before it builds anything.</p>
+      if (shouldOpen) {
+        selectedPanel.classList.add("open");
+        selectedButton.classList.add("active");
+        selectedButton.setAttribute("aria-expanded", "true");
 
-      <div class="callout">
-        <span class="callout-icon">🛠️</span> <strong>Before pasting the prompt</strong>, activate the live preview tool in your LLM — this lets you see the visualization as it's built. In <strong>ChatGPT or Gemini</strong>, look for <em>Canvas</em> in the toolbar. In <strong>Claude</strong>, look for <em>Artifacts</em>. Turn it on first, then paste the prompt.
-      </div>
+        window.setTimeout(() => {
+          selectedPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }, 60);
+      }
+    }
 
-      <div class="prompt-box phase2">
-        <div class="prompt-box-header">
-          <span class="prompt-label">📋 Paste this prompt into the LLM to start</span>
-          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
-        </div>
-        <span class="prompt-text">You are a web-design expert and co-designer of a data visualization tool that will be submitted as part of a final project in AP Statistics. I can provide statistical insights and questions, and you will provide the code to build a dynamic, interactive visual exploration of a data set. Start by asking me to upload my dataset. Once I've shared it, continue with the following questions. Ask each question one at a time, and ask followup questions if my answers are not clear:
-
-1. Is this sample or population data? Who or what is the observational unit?
-2. Which 2–3 variables am I most interested in exploring?
-3. Which AP Statistics chart type do I want as my baseline? (bar chart, mosaic plot, side-by-side bar graph, scatterplot, histogram, dot plot, or stem-and-leaf plot)
-4. What question do I want this visualization to help answer?
-
-After I answer, build the baseline chart as a clean, well-labeled, interactive HTML file. Make it look polished — good fonts, thoughtful colors, and clear axis labels. Show me the result and wait for my feedback before adding anything else.</span>
-      </div>
-
-      <h3>Your Baseline Must Include At Least One of These</h3>
-      <div class="viz-grid">
-        <div class="viz-item">
-          <div class="viz-name">Bar Chart / Side-by-Side Bars</div>
-          <div class="viz-when">Comparing counts or proportions across categories</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Mosaic Plot</div>
-          <div class="viz-when">Two categorical variables; area = count</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Histogram</div>
-          <div class="viz-when">Distribution of one quantitative variable</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Scatterplot</div>
-          <div class="viz-when">Relationship between two quantitative variables</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Dot Plot</div>
-          <div class="viz-when">Small dataset; individual values visible</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Stem-and-Leaf Plot</div>
-          <div class="viz-when">Small dataset; shows shape and individual values</div>
-        </div>
-      </div>
-
-      <div class="callout" style="margin-top:1rem">
-        <span class="callout-icon">⚠️</span> <strong>Before you submit:</strong> AI can make mistakes, and you should check outputs for accuracy. Does the chart type match your data? Are axes labeled with units? Does the title describe what the chart actually shows? These are the same things your teacher checks on a free-response.
-      </div>
-
-      <h3>Submitting Your Baseline</h3>
-      <p>Save your file as <code><strong>teammate1_teammate2.html</strong></code> using both of your last names (e.g., <code>chen_morgan.html</code>). Download it from the LLM's code panel and submit it to Google Classroom by the end of Monday's class. This is your checkpoint — it doesn't need to be finished, but it needs to run correctly in a browser.</p>
-      <p><strong>Also submit your chat transcript</strong> from today's session. Export or copy it as a PDF or shared link and attach it to the same Classroom submission. The transcript is evidence that you were directing the work — it should show you asking questions, pushing back, and making decisions, not just accepting whatever the LLM produced first.</p>
-    </div>
-  </div>
-
-  <!-- PHASE 3 -->
-  <div class="section">
-    <div class="section-header">
-      <span class="phase-badge p3">Phase 3</span>
-      <span class="section-title">Go Beyond Paper</span>
-    </div>
-    <div class="section-body">
-      <p>This is the part that makes your visualization worth presenting. Your job on Thursday is to add at least one interactive layer that paper and pencil simply cannot do — something that lets a viewer <em>explore</em> your data rather than just look at a picture of it.</p>
-
-      <p>Before you ask the LLM to build anything, <strong>decide with your group what you want and why.</strong> The feature should serve the questions you wrote down in Phase 1, not just look impressive. Be ready to explain that connection on Friday.</p>
-
-      <h3>Some Directions to Consider</h3>
-      <div class="viz-grid">
-        <div class="viz-item">
-          <div class="viz-name">Drill-down on hover</div>
-          <div class="viz-when">Hovering a bar or tile reveals a breakdown by a third variable inside it</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Filter / toggle</div>
-          <div class="viz-when">Dropdowns or checkboxes let the viewer slice the data and watch the chart update</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Tooltip storytelling</div>
-          <div class="viz-when">Hovering a data point shows rich context — not just the value, but what it means</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Animated comparison</div>
-          <div class="viz-when">A play button steps through time or ordered categories and animates the chart</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Linked views</div>
-          <div class="viz-when">Two charts side-by-side that highlight each other when you click</div>
-        </div>
-        <div class="viz-item">
-          <div class="viz-name">Your own idea</div>
-          <div class="viz-when">If you have something specific in mind, describe it to the LLM and see what's possible</div>
-        </div>
-      </div>
-
-      <h3>Submitting Your Final File</h3>
-      <p>By the start of Thursday's class, submit your updated <code>teammate1_teammate2.html</code> to Google Classroom. This is the version that will be hosted in the class gallery at mathclass.today — make sure it opens correctly in a browser with no internet connection required.</p>
-      <p><strong>Also submit your Thursday chat transcript</strong> alongside the file. Together, your Monday and Thursday transcripts are the paper trail for your decisions. If you're asked on Friday why you chose a particular chart type, interaction, or color scheme, your transcripts should back up your answer — they should show you proposing ideas, evaluating options, and steering the tool, not just running the LLM's first suggestion.</p>
-
-      <div class="callout">
-        <span class="callout-icon">📌</span> <strong>If something breaks</strong> while iterating, tell the LLM exactly what stopped working and ask it to fix only that part. If the code becomes hard to follow, ask the LLM to rewrite the full file cleanly while keeping all existing features. Save a working copy before making big changes.
-      </div>
-    </div>
-  </div>
-
-  <!-- PRESENTATION -->
-  <div class="section">
-    <div class="section-header">
-      <span class="phase-badge present">Present</span>
-      <span class="section-title">Friday Presentation · 5 Minutes</span>
-    </div>
-    <div class="section-body">
-      <p>Presentations are on <strong>Friday, May 15</strong>. Each pair has exactly <strong>5 minutes</strong>. You'll open your HTML file in the browser and walk the class through your data story. You are not summarizing your process — you are making an argument about what your data shows.</p>
-
-      <div class="callout" style="margin-bottom:1.25rem;border-color:var(--crimson);background:#fff0f2">
-        <span class="callout-icon">💭</span> <strong>Before you present:</strong> Your presentation needs to demonstrate thinking that is yours, not the AI's. Be ready to explain — without hesitation — why you made the choices you did. Expect questions about any of it.
-      </div>
-
-      <h3>Your 5 Minutes Should Cover</h3>
-      <ul class="checklist">
-        <li><strong>The dataset:</strong> Who are the individuals? What is the population? Is this a sample or a census?</li>
-        <li><strong>Your question:</strong> The specific statistical question you wrote down in Phase 1. Say it out loud.</li>
-        <li><strong>The baseline chart:</strong> Walk us through it the way you would on a free-response — shape, center, spread, or association. What does the standard view show?</li>
-        <li><strong>The interactive layer:</strong> Demo it live. Then explain: <em>Why did you add this feature? What does it reveal that the static chart couldn't?</em></li>
-        <li><strong>Your inference:</strong> Run one significance test or construct one confidence interval that directly addresses your question from Phase 1. State your inference methods and hypotheses (if applicable), check conditions briefly, report your result, and interpret it in context. You may embed the result in your visualization, but it must be addressed in your presentation.</li>
-        <li><strong>Your finding:</strong> What is the one thing you want us to walk away knowing? Connect the visual and the inference.</li>
-      </ul>
-
-      <h3>How You'll Be Assessed</h3>
-      <table class="rubric">
-        <thead>
-          <tr>
-            <th style="width:42%">What We're Looking For</th>
-            <th>What It Means</th>
-            <th style="width:10%">Pts</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Statistical accuracy</strong></td>
-            <td>Chart type matches data type; labels and scales are correct; sample/population distinction is stated clearly</td>
-            <td><span class="pts">2</span></td>
-          </tr>
-          <tr>
-            <td><strong>Interactive layer + decision</strong></td>
-            <td>Goes meaningfully beyond a paper chart; you can explain why you added it and what it reveals</td>
-            <td><span class="pts">3</span></td>
-          </tr>
-          <tr>
-            <td><strong>Inference</strong></td>
-            <td>Correct procedure chosen; conditions addressed; result interpreted in context of your question</td>
-            <td><span class="pts">3</span></td>
-          </tr>
-          <tr>
-            <td><strong>Data story + finding</strong></td>
-            <td>Visual and inference connect to a clear, specific claim about your data</td>
-            <td><span class="pts">1</span></td>
-          </tr>
-          <tr>
-            <td><strong>Polish</strong></td>
-            <td>Fonts are readable, axis labels are clear and correctly sized, titles are accurate, no typographical errors — the visualization looks finished</td>
-            <td><span class="pts">1</span></td>
-          </tr>
-          <tr>
-            <td><strong>Presentation</strong></td>
-            <td>5-minute limit respected; both partners speak; demo is live and working</td>
-            <td><span class="pts">1</span></td>
-          </tr>
-          <tr>
-            <td><strong>Chat transcripts</strong></td>
-            <td>All transcripts submitted; they show you directing the AI — proposing ideas, making decisions, and pushing back — not just accepting the first output</td>
-            <td><span class="pts">1</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="callout" style="margin-top:1rem">
-        <span class="callout-icon">📌</span> Your finished file will be hosted in the class gallery at mathclass.today — no laptop needed on Friday.
-      </div>
-    </div>
-  </div>
-
-</div><!-- /container -->
-
-<div class="footer">
-  AP Statistics · Middlesex School &nbsp;·&nbsp; Post-Exam Project · May 2026
-</div>
-
-<script>
-function copyPrompt(btn) {
-  const text = btn.closest('.prompt-box').querySelector('.prompt-text').innerText;
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'Copied!';
-    btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = 'Copy';
-      btn.classList.remove('copied');
-    }, 2000);
-  });
-}
-</script>
+    function openToolWindow(event, url) {
+      event.preventDefault();
+      window.open(url, "_blank", "width=840,height=660,resizable=yes,scrollbars=no");
+    }
+  </script>
 </body>
 </html>
